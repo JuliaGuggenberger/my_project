@@ -1,0 +1,34 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- WeekPreview.html - Phase III Week Preview Interface                  -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonIII.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== Week Preview HTML ======================== -->
+<h1 class="title-highlight">Phase III - Week {{current_week}} - Preview</h1>
+
+<div class="p-20">
+    <p>Welcome to <strong>Phase III - Token and trading enabled</strong>. You are now the option to <strong>buy or sell</strong> your Token in the market. 
+        Remember that the price adjusts depending on the Token bought or sold across all participants.
+    </p>
+
+    <!-- Token preview table  -->
+    {% include 'html_chunks/token_preview.html' %}
+
+    <!-- Budget overview -->
+    {% include 'html_chunks/budget_summary.html' %}
+    <br>
+
+    <!-- Submit button -->
+    <form method="post">
+         <button type="submit" class="button">Continue to week {{ current_week }}</button>
+    </form>
+</div>
+
+{{ endblock }}

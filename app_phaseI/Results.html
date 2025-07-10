@@ -1,0 +1,16 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Results.html - Phase I Results Interface                            -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonI.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== RESULTS HTML ======================== -->
+    {% include 'base_results.html' %}
+
+{{ endblock }}

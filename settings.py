@@ -1,0 +1,67 @@
+import os
+from pathlib import Path
+from os import environ
+
+# ==============================================================================
+# oTree Session Configuration
+# ==============================================================================
+
+# Base directory of the project
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SESSION_CONFIGS = [
+    dict(
+        name='my_project',
+        app_sequence=[
+            #'SurveyApp', 
+            'app_intro',
+            'app_phaseI', 'app_phaseII', 'app_phaseIII', 'app_phaseIV', 'app_phaseV',
+            'app_postsurvey', 'app_thankyou'
+            ],
+        num_demo_participants=2,
+        group_by_arrival_time=True,
+    ),
+]
+
+SESSION_CONFIG_DEFAULTS = dict(
+    real_world_currency_per_point=1.00,
+    participation_fee=40.00, 
+    doc=""
+)
+
+PARTICIPANT_FIELDS = []
+SESSION_FIELDS = []
+
+# ==============================================================================
+# Templates
+# ==============================================================================
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / '_templates'],  # <-- this enables global templates like 'global/token_overview.html'
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# ==============================================================================
+# Misc oTree / Django Settings
+# ==============================================================================
+LANGUAGE_CODE = 'en'
+REAL_WORLD_CURRENCY_CODE = 'DKK'
+REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
+USE_POINTS = False
+
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+
+DEMO_PAGE_INTRO_HTML = """ """
+
+SECRET_KEY = '4066956229700'

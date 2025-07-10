@@ -1,0 +1,57 @@
+<!-- ========== Token Preview Summary ========== -->
+<!-- for the following pages: Choice, Market -->
+<table class="mt-20" style="width: 100%; border-collapse: collapse">
+    <tr class="token-header center">
+        <th style="width: 15%"">Day</th>
+        <th style="width: 55%">Tour</th>
+        {% if current_phase != 'I' %}
+            <th style="width: 15%">
+                <div class="table-align">
+                    Base Token
+                    {% if current_phase != 'XTRA' %}
+                        <span class="tooltip-icon">
+                            <span class="info-circle">i</span>
+                            <span class="tooltip-text">These Token show how many Token you need for the <strong>same modes</strong> of transportation as in your usual commuting week.</span>
+                        </span>
+                    {% endif %}
+                </div>
+            </th>
+            <th style="width: 15%">
+                <div class="table-align">
+                    Avg. Token 
+                    {% if current_phase != 'XTRA' %}
+                        <span class="tooltip-icon">
+                            <span class="info-circle">i</span>
+                            <span class="tooltip-text">These Token show how many Token you need <strong>on average</strong> for the corresponding day.</span>
+                        </span>
+                    {% endif %}
+                </div>
+            </th>
+        {% endif %}
+    </tr>
+
+    {% for trip in preview_data %}
+    <tr>
+        <td>{{ trip.day }}</td>
+        <td>
+            {% if trip.mode == "no_commute" %}
+                <em>No commute</em>
+            {% else %}
+                {% include 'html_chunks/tour_display.html' %}
+            {% endif %}
+        </td>
+        {% if current_phase != 'I' %}
+            <td style="text-align: center;">{{ trip.base_token }}</td>
+            <td style="text-align: center;">{{ trip.avg_token }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+
+    {% if current_phase != 'I' %}
+        <tr class="table-total">
+            <td colspan="2" style="text-align: right;">Total:</td>
+            <td style="text-align: center;">{{ total_base_token }}</td>
+            <td style="text-align: center;">{{ total_avg_token }}</td>
+        </tr>
+    {% endif %}
+</table>

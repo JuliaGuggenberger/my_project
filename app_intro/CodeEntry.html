@@ -1,0 +1,25 @@
+{{ block content }}
+<!-- ==================================================================== -->
+<!-- CodeEntry.html - Code Entry page                                     -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== CODE ENTRY HTML ======================== -->
+<h1 class="title-highlight">Welcome to the experiment</h1>
+
+{{ formfields }}
+
+<!-- Submit button -->
+<form method="post">
+        <button type="submit" class="button">Continue</button>
+</form>
+
+<div class="privacy-text">
+    Your personal data will be handled in strict accordance with the General Data Protection Regulation (GDPR)... [TODO]
+</div>
+{{ endblock }}

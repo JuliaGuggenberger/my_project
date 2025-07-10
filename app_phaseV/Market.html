@@ -1,0 +1,18 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Market.html - Phase V Token Market Interface                      -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonV.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== MARKET INFORMATION HEADER ======================== -->
+    {% include 'base_market.html' %}
+
+{{ endblock }}
