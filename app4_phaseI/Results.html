@@ -1,0 +1,17 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Results.html - Phase IV Results Interface                            -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonI.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== RESULTS HTML ======================== -->
+<h3 class="title-highlight">Phase {{ current_phase }} - Week {{ current_week }} - Results</h3>
+    {% include 'base_results.html' %}
+
+{{ endblock }}

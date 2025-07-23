@@ -1,0 +1,331 @@
+
+<div style="display: flex; width:100%; gap: 30px; margin-bottom: 40px">    
+    <!-- ==================== Section 1: Token Market Panel ==================== -->
+    <div style="flex: 1">
+        <div style="width:100%" class="market-container">
+            <h2 class="title-highlight" style="text-align: center">Token Market</h2>
+                <span class="tooltip-icon" style=" transform: scale(1); transform-origin: top left;">
+                    <span style="color: var(--dark-teal); text-decoration: underline; font-size: 20px; margin-left: 280px;">Trading rules</span>
+                    <span class="tooltip-text" style="font-size: 16px; width: 500px; background-color: var(--light-teal); color: black">                           
+                        1. Each buy or sell transaction incurs a 0.5 DKK fee<br>
+                        2. You cannot buy Token if you don't have enough money<br>
+                        3. You cannot sell more Token than you currently own<br>
+                        4. You cannot buy more Token than you can use during the week<br>
+                        5. You cannot buy more Token than you can use the next day<br>
+                        6. The Token price increases or decreases by 0.01 DKK for each Token bought or sold across all participants
+                    </span>
+                </span>
+            <div class="market-info" style="margin-top: -40px;">       
+                <!-- Budget overview -->
+                {% include 'html_chunks/budget_summary.html' %}
+                <br>      
+            </div>
+
+            <!-- ==================== Market Form ==================== -->
+            <form id="market-form" method="post">
+                <!-- BUY SECTION -->
+                <label for="visible_buy"><strong>Buy Token:</strong></label>
+                <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                    <input type="number" id="visible_buy" min="0" placeholder="0" class="p-6"
+                        style="width: 230px; font-size: 14px" />
+                    <button type="button" class="button mt--10" onclick="submitBuy()"> Buy </button>
+                </div>
+                <div id="buy-error" class="mt--10 mb-10" style="color: var(--red); font-size: 14px; display: none"></div>
+                
+                <!-- SELL SECTION -->
+                <label for="visible_sell"><strong>Sell Token:</strong></label>
+                <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                    <input type="number" id="visible_sell" min="0" placeholder="0" class="p-6"
+                        style="width: 230px; font-size: 14px" />
+                    <button type="button" class="button mt--10" onclick="submitSell()"> Sell </button>
+                </div>
+                <div id="sell-error" class="mt--10 mb-10" style="color: var(--red); font-size: 14px; display: none"></div>
+                
+                <!-- Hidden inputs that oTree requires -->
+                <input type="hidden" name="token_purchased" id="token_purchased" value="0" />
+                <input type="hidden" name="token_sold" id="token_sold" value="0"/>
+
+                <!-- Market Preview -->
+                <div id="market-preview" class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)"></div>
+
+                <!-- Token Warning -->
+                <div id="token-warning" class="mb-20 p-12 warning-text" style="display: none">
+                    <strong>Warning:</strong> You need at least <span id="required-token-count"></span> Token for your next day.
+                </div>
+
+                <!-- Continue button -->
+                <div class="mt-20">
+                    <button type="submit" class="button" onclick="prepareForm()">Continue</button>
+                </div>
+            </form>
+
+            <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
+                Every time someone buys or sells a Token, it changes the price for the next day.
+            </p>
+        </div>
+    </div>
+    
+    <!-- ==================== Token Price Chart ==================== -->
+    <div style="flex: 1; margin-top: 100px">
+        <div style="width: 100%; padding-top: 30px">
+            <div class="subtitle">Token price development</div>
+            <canvas id="tokenPriceChart" height="200"></canvas>
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== Section 2: Travel Overview & Token Summary ==================== -->
+<div style="opacity: 0.6">
+    <div style="display: flex; width: 100%; gap: 30px">
+    <!-- Upcomming commute overview -->
+        <div style="flex: 0.55">
+        <div class="subtitle">Upcoming travel choice</div>
+        {% if default_mode == "no_commute" %}
+                    <em>No commute</em>
+        {% else %}
+
+            <p class="mb-0" style="width: 100%">
+            {% include 'html_chunks/tour_display.html' with trip=preview_data_today %}
+            </p>
+            <br>
+    <hr style="margin: 1px 0">
+                <form method="post">
+            <!-- Transport Mode Selection Table -->
+            <div class="max-width-left">
+            <table style="width: 100%">
+            {% for mode_info in modes %}
+            <tr>
+                <td>
+                        {% if mode_info.mode == 'walking' %}
+                            <i class="fas fa-person-walking"></i>
+                        {% elif mode_info.mode == 'cycling' %}
+                            <i class="fas fa-biking"></i>
+                        {% elif mode_info.mode == 'transit' %}
+                            <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                        {% elif mode_info.mode == 'driving' %}
+                            <i class="fas fa-car-side"></i>
+                        {% elif mode_info.mode == 'driving_reschedule' %}
+                            <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                        {% endif %}
+                </td>
+                <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
+                <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
+                    <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                <td> 
+                    <div class="mt--2">
+                        {% for is_filled in mode_info.rating %}
+                            {% if is_filled %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                            {% else %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ==================================================================== -->
+        <div style="flex: 0.45;">
+            <!-- Token overview -->
+            {% include 'html_chunks/token_overview.html' %}
+        </div>
+    </div>
+</div>
+
+
+{{ formfield_errors 'token_purchased' }}
+
+<!-- ==================== Chart Data ==================== -->
+<script type="application/json" id="market-data">
+{
+ "prices": {{ token_price_history_js }},
+ "labels": {{ token_day_labels_js }}
+}
+</script>
+
+<!-- ==================== JavaScript (see bottom of original) ==================== -->
+<script>
+let totalTokenPurchased= 0;
+let totalTokenSold= 0;
+const currentBudget= parseFloat("{{ budget }}") || 0;
+const currentToken= parseInt("{{ token }}") || 0;
+const maxTokenAllowed= parseInt("{{ max_token }}") || 0;
+const maxTokenPerBuy= parseInt("{{ absolute_max_token }}") || 0;
+const minTokenNeeded= parseInt("{{ min_required_token }}");
+
+console.log("currentToken", currentToken);
+console.log("minTokenNeeded", minTokenNeeded);
+if (currentToken < minTokenNeeded) {
+    document.getElementById("required-token-count").innerText= minTokenNeeded;
+    document.getElementById("token-warning").style.display="block";
+}
+
+// ============================================================================
+// Submit Buy Function
+function submitBuy() {
+    const input = document.getElementById("visible_buy");
+    const value = parseInt(input.value) || 0;
+    const tokenPrice = parseFloat("{{ token_price }}");
+    const fixedFee = parseFloat("{{ transaction_costs }}");
+
+    const errorDiv = document.getElementById("buy-error");
+    errorDiv.style.display = "none";
+    errorDiv.textContent = "";
+
+    const futureBuyTotal = totalTokenPurchased + value;
+
+    let availableBudget = currentBudget - futureBuyTotal * tokenPrice;
+    if (futureBuyTotal > 0) {
+        availableBudget -= fixedFee;
+    }
+
+    const futureTokenHoldings = currentToken + totalTokenPurchased + value - totalTokenSold;
+    if (availableBudget < 0) {
+        errorDiv.innerHTML = `<strong>Not enough money.</strong> This trade would exceed your available budget.`;
+        errorDiv.style.display = "block";
+        input.value = '';
+        return;
+    }
+
+    if (futureTokenHoldings > maxTokenAllowed) {
+        errorDiv.innerHTML = `Buying Token is blocked as the trade exceeds the <strong>maximum Token useable for the remaining week of ${maxTokenAllowed} Token.</strong>`;
+        errorDiv.style.display = "block";
+        input.value = '';
+        return;
+    }
+
+    if ((totalTokenPurchased + value) > maxTokenPerBuy) {
+        errorDiv.innerHTML = `Buying Token is blocked as the trade exceeds the <strong>maximum Token useable for the next day of ${maxTokenPerBuy} Token.</strong>`;
+        errorDiv.style.display = "block";
+        input.value = '';
+        return;
+    }
+
+    if (value > 0) {
+        totalTokenPurchased += value;
+        document.getElementById("token_purchased").value = totalTokenPurchased;
+        input.value = '';
+        updateMarketPreview();
+    }
+}
+
+// ============================================================================
+// Submit Sell Function
+function submitSell() {
+    const input = document.getElementById("visible_sell");
+    const value = parseInt(input.value) || 0;
+
+    const errorDiv = document.getElementById("sell-error");
+    errorDiv.style.display = "none";
+    errorDiv.textContent = "";
+
+    const maxSellableToken = currentToken + totalTokenPurchased - totalTokenSold;
+
+    if (value > maxSellableToken) {
+        errorDiv.innerHTML = "<strong>Not enough Token.</strong> This trade would exceed the available Token.";
+        errorDiv.style.display = "block";
+        input.value = '';
+        return;
+    }
+
+    if (value > 0) {
+        totalTokenSold += value;
+        document.getElementById("token_sold").value = totalTokenSold;
+        input.value = '';
+        updateMarketPreview();
+    }
+}
+
+// ============================================================================
+// Prepare Form Function
+function prepareForm() {
+    // Ensure defaults are set
+    const buy= document.getElementById("token_purchased");
+    const sell= document.getElementById("token_sold");
+
+    if (!buy.value) buy.value= 0;
+    if (!sell.value) sell.value= 0;
+}
+
+// ============================================================================
+// Prepare Form Function
+const ctx= document.getElementById('tokenPriceChart').getContext('2d');
+const marketData= JSON.parse(document.getElementById("market-data").textContent);
+const tokenPrices= marketData.prices;
+const rounds= marketData.labels;
+
+const darkTeal = getComputedStyle(document.body).getPropertyValue('--dark-teal');
+const lightTeal = getComputedStyle(document.body).getPropertyValue('--light-teal');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: rounds,
+        datasets: [{
+            label: 'Token Price (DKK)',
+            data: tokenPrices,
+            borderColor: darkTeal,
+            tension: 0,
+            pointRadius: 3,
+            pointBackgroundColor: lightTeal,
+            pointBorderColor: darkTeal,
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: false,
+                min: 0,
+                max: 10,
+                ticks: {
+                    maxTicksLimit: 10, // Only show up to 4 tick lines
+                    // You can also round or format here:
+                    callback: function(value) {
+                        return `${value.toFixed(2)}`;
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: { label: context=> `DKK ${context.parsed.y.toFixed(2)}` }
+            }
+        }
+    }
+});
+
+// ============================================================================
+// Update Market Preview Function
+function updateMarketPreview() {
+    const tokenPrice = parseFloat("{{ token_price }}");
+
+    const fixedFee = parseFloat("{{ transaction_costs }}");
+    let transactionFee = 0;
+    if (totalTokenPurchased > 0 || totalTokenSold > 0) {
+        transactionFee = fixedFee;
+    }
+
+    const previewBudget = currentBudget - (totalTokenPurchased * tokenPrice) + (totalTokenSold * tokenPrice) - transactionFee;
+    const previewToken = currentToken + totalTokenPurchased - totalTokenSold;
+
+    const preview = document.getElementById("market-preview");
+    preview.innerHTML = `
+        <strong>Trade summary:</strong><br>
+        Token Bought: <span style="color: var(--token-green)">${totalTokenPurchased}</span><br>
+        Token Sold: <span style="color: var(--token-green)">${totalTokenSold}</span><br>
+        Transaction Fee: <span style="color: var(--budget-orange)">${transactionFee.toFixed(2)} DKK</span><br><br>
+        <strong>Budget preview after trade:</strong><br>
+        Monetary Budget: <span style="color:  var(--budget-orange)">${previewBudget.toFixed(2)}</span> DKK<br>
+        Token Budget: <span style="color: var(--token-green)">${previewToken}</span>
+    `;
+}
+</script>

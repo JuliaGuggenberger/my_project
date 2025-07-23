@@ -1,0 +1,40 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Literacy.html - Literacy page                                        -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ========================  Literacy HTML ============================ -->
+<h1 class="title-highlight">A few quick questions</h1>
+
+  <p>
+    Before we conclude, we would like to ask a few short questions related to financial situations. Please answer based on what you think or believe.
+  </p>
+
+<!-- Questions -->   
+<form method="post">
+  <div class="question-block">
+    {{ form.literacy_1.label }}
+    {{ form.literacy_1 }}
+    {{ formfield_errors 'literacy_1' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.literacy_2.label }}
+    {{ form.literacy_2 }}
+    {{ formfield_errors 'literacy_2' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.literacy_3.label }}
+    {{ form.literacy_3 }}
+    {{ formfield_errors 'literacy_3' }}
+  </div><br>
+  <button type="submit" class="button">Submit Answers</button>
+</form>
+
+{{ endblock }}

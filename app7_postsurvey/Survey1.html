@@ -1,0 +1,95 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Survey.html - Post survey page                                       -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== THANK YOU HTML ======================== -->
+<h1 class="title-highlight">Wrap-up questions 1 of 3</h1>
+
+  <p>
+    Please take a moment to answer the following questions about your experience during the experiment. Your feedback is important for improving future versions.
+  </p>
+
+<!-- Questions -->   
+<form method="post">
+ <div class="question-block">
+    {{ form.understanding_level.label }}
+    {{ form.understanding_level }}
+    {{ formfield_errors 'understanding_level' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.clarity_of_rules.label }}
+    {{ form.clarity_of_rules }}
+    {{ formfield_errors 'clarity_of_rules' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.interface_ease.label }}
+    {{ form.interface_ease }}
+    {{ formfield_errors 'interface_ease' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.familiar_currency.label }}
+    <div id="familiar_currency">
+      {{ form.familiar_currency }}
+    </div>
+    {{ formfield_errors 'familiar_currency' }}
+
+    <div id="familiar_currency-other-container" style="display:none;">
+      {{ form.familiar_currency_other.label }}
+      {{ form.familiar_currency_other }}
+      {{ formfield_errors 'familiar_currency_other' }}
+    </div>
+  </div><br>
+  <div class="question-block">
+    {{ form.strategy_description.label }}
+    {{ form.strategy_description }}
+    {{ formfield_errors 'strategy_description' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.minimization_focus.label }}
+    {{ form.minimization_focus }}
+    {{ formfield_errors 'minimization_focus' }}
+  </div><br>
+  <div class="question-block">
+    {{ form.fair_price_token.label }}
+    {{ form.fair_price_token }}
+    {{ formfield_errors 'fair_price_token' }}
+  </div><br>
+
+  <button type="submit" class="button">Submit Survey</button>
+</form>
+
+<script>
+  function toggleOtherField(groupName, otherValue, containerId) {
+    const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+    const container = document.getElementById(containerId);
+
+    function checkSelection() {
+      let selected = Array.from(radios).find(r => r.checked);
+      if (selected && selected.value === otherValue) {
+        container.style.display = "block";
+      } else {
+        container.style.display = "none";
+      }
+    }
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', checkSelection);
+    });
+
+    checkSelection(); // Initial check on load
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    toggleOtherField("familiar_currency", "4", "familiar_currency-other-container");
+  });
+</script>
+
+{{ endblock }}

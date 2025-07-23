@@ -1,0 +1,155 @@
+/* ===================================================== */
+/* ====== Common CSS for Phase III of the project ====== */
+/* ===================================================== */
+
+
+/* ==================== ROOT COLORS ==================== */
+:root { 
+    --budget-orange: #ec7301;
+    --token-green: #659b00;
+    --token-green-light: #F8FFEB;
+    --summary-label-color: #2c3e50;
+    --button-border: #5353534b;
+    --summary-backg: #f8f9fa;
+    --warning-dark: #721c24;
+    --warning-light: #f8d7da;
+    --red: #C00000;
+    --white: #ffffff;
+    --shadow: #0000000D;
+    --warning-1: #fff3cd;
+    --warning-2: #ffeeba;
+    --warning-3: #6F4900;
+ }
+
+/* ==================== TYPOGRAPHY ==================== */
+body, table { font-family: sans-serif; }
+.title-highlight { font-weight: bold; color: var(--dark-teal); }
+.title-highlight-green { font-weight: bold; color: var(--token-green); }
+.subtitle { font-size: 20px; font-weight: bold; color: var(--dark-teal); }
+.privacy-text { margin-top: 15px; font-style: italic; font-size: 0.9em; color: var(--summary-label-color); max-width: 600px; text-align: justify;}
+label { font-weight: bold; }
+.nowrap { white-space: nowrap; }
+.slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 2rem; cursor: pointer; 
+    color: var(--light-teal); z-index: 2; padding: 0 10px; }
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
+.slider-arrow:hover { color: var(--dark-teal); }
+
+/* ==================== SPACING UTILITIES ==================== */
+.mt--10 { margin-top: -10px; }
+.mt--2 { margin-top: -2px; }
+.mt-20 { margin-top: 20px; }
+.mt-10 { margin-top: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-0 { margin-bottom: 0px; }
+.p-12 { padding: 12px; }
+.p-10 { padding: 10px; }
+.p-6 { padding: 6px; }
+
+
+/* ==================== TABLE STYLING ==================== */
+table { border-collapse: collapse; }
+th, td { padding: 8px; text-align: left; }
+table tr { border-bottom: 1px solid var(--button-border); }
+table tr:not(.token-header):not(.table-total):hover {background-color: var(--light-teal);}
+.table-total { font-weight: bold; color: var(--summary-label-color); background-color: var(--light-teal) }
+.table-align { display: inline-flex; align-items: center; position: relative; }
+
+
+/* ==================== BORDER & BACKGROUND STYLES ==================== */
+.border-left-phase { border-left: 4px solid var(--dark-teal); background-color: var(--summary-backg); }
+.border-left-green { border-left: 4px solid var(--token-green); background-color: var(--token-green-light); }
+.text-bold-dark { font-weight: bold; color: var(--summary-label-color); }
+.text-bold-green { font-weight: bold; color: var(--token-green); }
+.text-bold-orange { font-weight: bold; color: var(--budget-orange); }
+.warning-text {background-color: var(--warning-light); color: var(--warning-dark); border: 1px solid var(--warning-light); border-radius: 4px; font-size: 14px; }
+.error-message {color:var(--red); font-size: 0.9em; display: none;}
+
+/* ==================== LAYOUT & WIDTH ==================== */
+.section-card { background-color: var(--summary-backg); padding: 10px; border-left: 4px solid var(--dark-teal); }
+.max-width-left { max-width: 600px; }
+.max-width-right { max-width: 400px; }
+.min-width-left { max-width: 600px; }
+.min-width-right { min-width: 400px; }
+.flex-wrap-gap { display: flex; flex-wrap: wrap; gap: 20px; }
+.hr-separator { margin: 20px 0; }
+
+
+/* ==================== TOKEN STYLES ==================== */
+.token-header { background-color: var(--dark-teal); color: var(--white); }
+.token-header.center { text-align: center;}
+.token-overview-table td:not(:first-child) { text-align: center; }
+
+
+/* ==================== SUMMARY STYLES ==================== */
+.summary-card { background-color: var(--summary-backg); border: 1px solid var(--button-border); border-radius: 10px; 
+                padding: 15px; box-shadow: 0 2px 6px var(--shadow); margin-top: 40px; }
+.summary-grid { display: grid; grid-template-columns: 160px auto; row-gap: 10px; column-gap: 20px; align-items: baseline; }
+.summary-aligned { display: flex; flex-direction: column; padding: 10px; gap: 10px; }
+.summary-row { display: flex; align-items: baseline; gap: 8px; }
+.summary-label { font-weight: bold; color: var(--summary-label-color); text-align: left; white-space: nowrap; }
+.summary-value { text-align: left; font-weight: bold; font-size: 20px; white-space: nowrap; }
+.summary-unit { font-size: 16px; font-weight: normal; color: var(--summary-label-color); margin-left: 4px; }
+
+
+/* ==================== COUNTDOWN ==================== */
+.otree-timer { display: none; background-color: var(--warning-1) !important; color: var(--warning-3) !important; 
+                padding: 20px 10px 5px 10px !important; border-radius: 6px !important; border: 1px solid var(--warning-2) !important; 
+                font-size: 16px !important; margin: 0px auto 20px auto !important; width: fit-content !important; 
+                min-width: 100% !important; display: block !important; text-align: left !important; }
+
+
+/* ==================== BUTTONS ==================== */
+button { background-color: var(--button-border); color: var(--summary-label-color); padding: 12px 24px; font-size: 16px; border: none;
+         border-radius: 8px; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; }
+button:hover { background-color: var(--dark-teal); color: var(--white); transform: scale(1.05); }
+button:active { background-color: var(--dark-teal); color: var(--white); transform: scale(0.95); }
+
+
+/* ==================== ICONS & ARROWS ==================== */
+.icon { height: 20px; vertical-align: -3px; margin-left: 4px; }
+.arrow { font-size: 16px; color: var(--dark-teal); margin: 0 6px; }
+
+
+/* ==================== FORM ELEMENTS ==================== */
+input[type="radio"] { appearance: none; -webkit-appearance: none; background-color: var(--white) !important; margin: 0 8px 0 0; font: inherit;  
+                        width: 1.15em; height: 1.15em; border: 0.15em solid var(--summary-label-color) !important; border-radius: 50%; display: inline-grid;
+                        place-content: center; cursor: pointer; transition: border-color 0.2s ease; vertical-align: middle; position: relative; 
+                        box-shadow: none !important; }
+input[type="radio"]::before { content: ""; width: 0.65em; height: 0.65em; border-radius: 50%; transform: scale(0);
+                                transition: transform 0.2s ease-in-out; background-color: var(--dark-teal); }
+input[type="radio"]:checked::before { transform: scale(1); }
+input[type="radio"]:hover { border-color: var(--dark-teal); }
+input[type="radio"] + label, input[type="checkbox"] + label, ul li label {font-weight: normal; }
+input[type="text"] {width: 100px; padding: 8px; font-size: 16px; border-radius: 4px; border: 2px solid var(--button-border);}
+input[type="text"]:hover { border-color: var(--dark-teal); }
+input[type="text"]:focus { outline: none; border-color: var(--dark-teal); box-shadow: 0 0 6px var(--dark-teal); }
+textarea { width: 100%; padding: 8px; font-size: 16px; border-radius: 4px; border: 2px solid var(--button-border); resize: vertical; }
+textarea:hover { border-color: var(--dark-teal); }
+textarea:focus { outline: none; border-color: var(--dark-teal); box-shadow: 0 0 6px var(--dark-teal); }
+
+/* ==================== TOOLTIP ==================== */
+.tooltip-icon { position: relative; display: inline-block; cursor: pointer; margin-left: -2px; }
+.tooltip-text { visibility: hidden; width: 220px; background-color: var(--summary-label-color); color: var(--white); text-align: left; border-radius: 5px;
+                padding: 8px; position: absolute; z-index: 10; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; 
+                transition: opacity 0.3s; font-size: 12px; line-height: 1.4; white-space: normal; }
+.tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px;
+                        border-style: solid; border-color: var(--summary-label-color) transparent transparent transparent; }
+.tooltip-icon:hover .tooltip-text { visibility: visible; opacity: 1; }
+.info-circle { font-style: normal; font-weight: normal; font-size: 11px; color: var(--summary-label-color); vertical-align: top; background-color: var(--light-teal);
+                border: 1.5px solid var(--summary-label-color); border-radius: 50%; width: 14px; height: 14px; display: inline-flex; align-items: center;
+                justify-content: center; margin-left: 4px; cursor: pointer; text-align: center; box-sizing: border-box; }
+.info-circle.choice { margin-left: 0px; }
+
+
+/* ==================== MARKET STYLES ==================== */
+.market-container { width: 100%; margin: 20px auto; padding: 25px; background-color: var(--white); border-radius: 12px;
+                    box-shadow: 0 0 20px var(--shadow); font-family: sans-serif; }
+.market-header { font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align: center; }
+.market-info { font-size: 16px; margin-bottom: 20px; }
+.market-info strong { color: var(--summary-label-color); }
+.highlight { font-size: 20px; font-weight: bold; color: var(--budget-orange); }
+input[type="number"] { padding: 8px; font-size: 16px; width: 100%; margin-top: 5px; margin-bottom: 15px; }
+#market-preview { font-size: 0.95em; color: var(--summary-label-color); margin-top: 10px; }

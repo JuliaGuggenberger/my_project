@@ -1,0 +1,322 @@
+{{ block content }}
+
+<head>
+    <!-- Include Font Awesome icon library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+
+<div style="font-family: Arial, sans-serif; max-width: 1000px; line-height: 1.6;">
+  <h2 class="title-highlight">Tradable Credit Scheme Experiment</h2>
+  <p style="text-align: justify; font-size: 14px;">
+    In this experiment, you will help us to test a road pricing scheme designed to reduce CO₂ equivalents (CO₂eq)<span class="tooltip-icon" style=" transform: scale(0.8); transform-origin: top left;">
+        <span class="info-circle">i</span>
+        <span class="tooltip-text">CO₂eq is a standard unit for measuring carbon footprints; it expresses the impact of all greenhouse 
+            gases in terms of the amount of CO₂ that would produce the same warming effect.</span>
+    </span>. Emissions will be used onwards as a synonym for CO₂eq
+    The results will provide valuable insights for implementing the Tradable Credit Scheme (TCS) in the real-world. <br>
+    The idea behind the TCS is to give everyone a limited number of Token, which are required for commuting. Each Token represents 1 kg of 
+    CO₂eq. If you need more Token, you can buy them; if you have extra, you can sell them. <br>
+    Click the arrows to see the idea summarized:
+  </p>
+
+
+<div id="phaseSlider" style="position: relative; width: 100%; max-width: 700px; margin: auto; overflow: hidden; border-radius: 10px; background: #f8f8f8; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div class="slide" style="display: block;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_1.png' %}" alt="leaf" style="height: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>1. Problem</strong> <br>
+                    Road traffic and congestion are major global challenges, causing significant costs at individual,
+                    environmental, economic, and social levels (Eurostat 2018). By 2030, transport emissions may account for 40% of
+                    Denmark’s total emissions (Kamp Damgård 2019).
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_2.png' %}" alt="leaf" style="height: 250px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>2. Solution</strong> <br>
+                    That's where the Tradable Credit Scheme (TCS) comes in. One Token has the value of 1 kg of CO₂eq.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_3.png' %}" alt="leaf" style="height: 250px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>3. Functionality TCS: Allocation</strong> <br>
+                    Everyone gets an initial amount of Token, which can be used for commuting. The allocation depends on the emissions of you commuting behavior from the Travel Diary you reported.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_4.png' %}" alt="leaf" style="height: 200px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>4. Functionality TCS: Market</strong> <br>
+                    Need more Token for your commute? You can buy them on the market. <br> Have leftover Token? You can sell them and earn money. The price changes with every transaction.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_5.png' %}" alt="leaf" style="height: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>5. Functionality TCS: Structure</strong> <br>
+                    The regulator (e.g.: government) oversees the system, distributes the Token and monitors the market. The travelers can interact with the market and make commuting decisions.
+                </td>
+            </tr>
+        </table>
+    </div>
+        <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/TCS_6.png' %}" alt="leaf" style="height: 250px">
+                </td>
+                <td style="padding: 20px; text-align: justify;">
+                    <strong>6. Goal</strong> <br>
+                    The TCS helps foster sustainable commuting behavior by making travelers aware of their emissions and incentivizing them to choose greener transport modes.
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Navigation Buttons -->
+    <button type="button" onclick="changeSlide(-1)" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❮</button>
+    <button type="button" onclick="changeSlide(1)" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❯</button>
+</div>
+<br>
+<div style="text-align: justify;">
+  You will be faced in the experiment with commuting decisions of every weekday. The choices you have available reflect your commuting 
+  in real life. Therefore, try to make decisions as you would in real life. One choice 
+  always consists of one <strong>whole commuting day</strong>. <br>
+  An example of a <strong>choice set</strong>:
+</div>  
+
+<div style=" transform: scale(0.8); transform-origin: top center; margin-left:150px; margin-bottom: -50px;">
+    <div style="width: 100%; margin-top: 0px;">
+        <form method="post">
+        <!-- Transport Mode Selection Table -->
+            <div class="max-width-left">
+                <table style="width: 100%">
+                {% for mode_info in modes %}
+                <tr>
+                    <td>
+                            {% if mode_info.mode == 'walking' %}
+                                <i class="fas fa-person-walking"></i>
+                            {% elif mode_info.mode == 'cycling' %}
+                                <i class="fas fa-biking"></i>
+                            {% elif mode_info.mode == 'transit' %}
+                                <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                            {% elif mode_info.mode == 'driving' %}
+                                <i class="fas fa-car-side"></i>
+                            {% elif mode_info.mode == 'driving_reschedule' %}
+                                <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                            {% endif %}
+                            {% if mode_info.mode == default_mode %}
+                                <br> <span style="color: var(--dark-teal)">(default)</span>
+                            {% endif %}
+                    </td>
+                    <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
+                        <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
+                        <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                    <td> 
+                        <div class="mt--2">
+                            {% for is_filled in mode_info.rating %}
+                                {% if is_filled %}
+                                    <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                                {% else %}
+                                    <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </form>
+    </div>
+</div>    
+    <br>
+    <div style="margin-left: 50px; margin-right: 50px;">
+    <strong>Modes:</strong>
+    <div class="mb-20 p-10 border-left-phase">
+        <table style="width: auto; border-collapse: collapse; font-size: 0.95em; margin: 0; padding: 0;">
+            {% for mode_info in modes %}
+                <tr style="vertical-align: top;">
+                    <td style="padding: 6px 12px; min-width: 220px; white-space: nowrap; vertical-align: middle;">
+                        {% if mode_info.mode == 'walking' %}
+                            <i>Walking </i><i class="fas fa-person-walking"></i>
+                        {% elif mode_info.mode == 'cycling' %}
+                            <i>Biking </i><i class="fas fa-biking"></i>
+                        {% elif mode_info.mode == 'transit' %}
+                            <i>Public Transport </i><i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                        {% elif mode_info.mode == 'driving' %}
+                            <i>Driving </i><i class="fas fa-car-side"></i>
+                        {% elif mode_info.mode == 'driving_reschedule' %}
+                            <i>Driving (reschedule) </i><i class="fas fa-car-side"></i><sup><i class="fas fa-clock"></i><sup>{{ buffer }}</sup></sup>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 6px 12px;">
+                        {% if mode_info.mode in ['walking', 'cycling', 'transit'] %}
+                            No Token required
+                        {% elif mode_info.mode == 'driving' %}
+                            This commute is assumed to happen during peak hours, which makes it slower and requires more Token, as the emissions are higher.
+                        {% elif mode_info.mode == 'driving_reschedule' %}
+                            By leaving {{ buffer }} min earlier to avoid peak hours, you save Token and reduce CO₂eq.
+                        {% endif %}
+                    </td>    
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+    <strong>Other attributes:</strong>
+    <div class="mb-20 p-10 border-left-phase">
+        <table style="width: auto; border-collapse: collapse; font-size: 0.95em; margin: 0; padding: 0;">
+            <tr>
+                <td style="min-width: 200px;"">
+                    <i>Time </i><img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">
+                </td>
+                <td>
+                    Total commute time for the day.
+                </td> 
+            </tr>
+            <tr>
+                <td> 
+                    <span style="color: var(--budget-orange)"><i>Costs </i></span><img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">
+                </td>
+                <td>
+                    These costs reflect both mode-specific expenses (e.g., fuel, tickets) and the value of your time when using each mode. If you are less flexible or do 
+                    not typically use public transport, it may be more expensive for you. For biking, the costs also include the physical effort required and the potential 
+                    discomfort or inconvenience, which are factored in as part of the overall cost.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color: var(--token-green)"><i>Token </i></span><img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">
+                </td>
+                <td>
+                    Token needed for the specific mode of transport.
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <i>Environmental Ranking </i><img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                </td>
+                <td>
+                    The number of leaves indicates how environmentally friendly each commuting option is in comparison to the other options available in your choice set.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style="color: var(--dark-teal)">(default)</span>
+                </td>
+                <td>
+                    The mode marked as "default" is the one you stated in your travel diary and will be automatically selected if you do not make an active choice.
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+<div style="text-align: justify;">
+    To be able to make the choice you will get a monetary budget and a Token budget, which will decrease after every decision. You will also be informed of the Token price, 
+    which will remain constant at the beginning. The budget will be valid for one week and then it will be renewed.
+</div>
+<div style=" transform: scale(0.8); transform-origin: top left; margin-bottom: -50px; margin-top: -20px; width: 50%;">
+    <div class="summary-card">
+        <div class="summary-grid">
+            <div class="summary-label">Current Token Price:</div>
+            <div class="summary-value"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+            <div class="summary-label">Monetary Budget:</div>
+            <div class="summary-value"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
+            <div class="summary-label">Token Budget:</div>
+            <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+        </div>
+    </div>
+</div>
+<br>
+<ul>
+    <li style="margin-bottom: 6px;"><strong>Not enough Token to commute?</strong> The required Token will be automatically purchased at the current price plus a 50 DKK fee</li>
+    <li style="margin-bottom: 6px;"><strong>Leftover Token?</strong> Any unused Token will be sold at the current price minus transaction costs</li>
+    <li style="margin-bottom: 6px;">The monetary budget <strong>can get negative.</strong></li>
+</ul>
+<br>
+
+<h4 class="title-highlight">Check your understanding</h4>
+<form method="post" style="font-size: 14px;"" >
+ <div class="question-block">
+    {{ form.travel_decision.label }}
+    {{ form.travel_decision }}
+    {{ formfield_errors 'travel_decision' }}
+  </div><br>
+   <div class="question-block">
+    {{ form.not_enough_token.label }}
+    {{ form.not_enough_token }}
+    {{ formfield_errors 'not_enough_token' }}
+  </div><br>
+   <div class="question-block">
+    {{ form.token_valid.label }}
+    {{ form.token_valid }}
+    {{ formfield_errors 'token_valid' }}
+  </div><br>
+   <div class="question-block">
+    {{ form.cost_structure.label }}
+    {{ form.cost_structure }}
+    {{ formfield_errors 'cost_structure' }}
+  </div><br>
+   <div class="question-block">
+    {{ form.default_mode.label }}
+    {{ form.default_mode }}
+    {{ formfield_errors 'default_mode' }}
+  </div><br>
+
+  <button type="submit" id="submit-choice">Start the test week</button>  
+</form>
+
+<script>
+let slideIndex = 0;
+const slides = document.querySelectorAll("#phaseSlider .slide");
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.style.display = i === index ? "block" : "none";
+    });
+}
+function changeSlide(direction) {
+    slideIndex = (slideIndex + direction + slides.length) % slides.length;
+    showSlide(slideIndex);
+}
+document.addEventListener("DOMContentLoaded", () => {
+    showSlide(slideIndex);
+});
+</script>
+
+{{ endblock }}

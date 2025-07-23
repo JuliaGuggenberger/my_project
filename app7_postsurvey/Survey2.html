@@ -1,0 +1,83 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Survey.html - Post survey page                                       -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== THANK YOU HTML ======================== -->
+<h1 class="title-highlight">Wrap-up questions 2 of 3</h1>
+
+  <p>
+    Please take a moment to answer the following questions about your experience during the experiment. Your feedback is important for improving future versions.
+  </p>
+
+<!-- Questions -->   
+<form method="post">
+  <strong>Please indicate how much you agree or disagree with each of the following statements.</strong>
+  <p>Use the scale below, where 1 = strongly disagree, 5 = strongly agree.</p>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th style="text-align: center;">Strongly disagree</th>
+        <th style="text-align: center;">Somewhat disagree</th>
+        <th style="text-align: center;">Neither agree nor disagree</th>
+        <th style="text-align: center;">Somewhat agree</th>
+        <th style="text-align: center;">Strongly agree</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Trading Token seems fun.</td>
+        {% for subwidget in form.fun_rating %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'fun_rating' }}
+      </tr>
+      <tr>
+        <td>Trading Token seems difficult.</td>
+        {% for subwidget in form.difficulty_rating %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'difficulty_rating' }}
+      </tr>
+      <tr>
+        <td>Using Token feels intuitive to me.</td>
+        {% for subwidget in form.intuitive_rating %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'intuitive_rating' }}
+      </tr>
+      <tr>
+        <td>I think this scheme would work better than a standard carbon tax.</td>
+        {% for subwidget in form.system_vs_tax %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'system_vs_tax' }}
+      </tr>
+      <tr>
+        <td>I prefer this scheme over a standard carbon tax.</td>
+        {% for subwidget in form.prefer_over_tax %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'prefer_over_tax' }}
+      </tr>
+      <tr>
+        <td>The second allocation method is fairer then the first one.</td>
+        {% for subwidget in form.permit_fairness %}
+          <td style="text-align: center;">{{ subwidget }}</td>
+        {% endfor %}
+        {{ formfield_errors 'permit_fairness' }}
+      </tr>
+    </tbody>
+  </table> <br>
+
+  <button type="submit" class="button">Submit Survey</button>
+</form>
+{{ endblock }}

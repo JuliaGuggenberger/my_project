@@ -1,0 +1,19 @@
+<!-- ========== Token Overview Summary ========== -->
+<!-- for the following pages: Choice, Market -->
+<div class="summary-card">
+    <div class="summary-grid">
+        <div class="summary-label">Current Token Price:</div>
+        <div class="summary-value"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+        {% if page_name != 'results' %}
+            <div class="summary-label">Monetary Budget:</div>
+            <div class="summary-value"><span style="color: var(--budget-orange)">{{ budget }}</span> <span class="summary-unit">DKK</span></div>
+            <div class="summary-label">Token Budget:</div>
+            <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+        {% else %}
+            <div class="summary-label">Monetary Budget:</div>
+            <div class="summary-value"><span style="color: var(--budget-orange)">{{ budget_init }}</span> <span class="summary-unit">DKK</span></div>
+            <div class="summary-label">Token Budget:</div>
+            <div class="summary-value"><span style="color: var(--token-green)">{{ token_init }}</span> <span class="summary-unit">Token</span></div>
+        {% endif %}
+    </div>
+</div>

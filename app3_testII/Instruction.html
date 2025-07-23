@@ -1,0 +1,198 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- WeekPreview.html - Test Phase II Week Preview Interface                  -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== Week Preview HTML ======================== -->
+<h1 class="title-highlight">Introduction to the Market</h1>
+
+<div style="text-align: justify;">
+    From now on you can decide before each trip, to either <strong>buy</strong> or <strong>sell</strong> Token, or to <strong>keep</strong> your current Token balance. The trade is completed as soon as you click the Buy or Sell button. <br>
+    This is a display of the Market:
+</div>
+<!-- ==================== Market Form ==================== -->
+<div style=" transform: scale(0.7); transform-origin: top center; margin-left: -200px; margin-bottom: -150px;">
+    <div style="width:50%" class="market-container">
+        <h2 class="title-highlight" style="text-align: center">Token Market</h2>
+
+        <div class="market-info">       
+            <!-- Budget overview -->
+            {% include 'html_chunks/budget_summary.html' %}
+            <br>      
+        </div>
+
+        <!-- ==================== Market Form ==================== -->
+        <form id="market-form" method="post">
+            <!-- BUY SECTION -->
+            <label for="visible_buy"><strong>Buy Token:</strong></label>
+            <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                <input type="number" id="visible_buy" min="0" placeholder="0" class="p-6"
+                    style="width: 230px; font-size: 14px" />
+                <button type="button" class="button mt--10" onclick="submitBuy()"> Buy </button>
+            </div>
+            
+            <!-- SELL SECTION -->
+            <label for="visible_sell"><strong>Sell Token:</strong></label>
+            <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                <input type="number" id="visible_sell" min="0" placeholder="0" class="p-6"
+                    style="width: 230px; font-size: 14px" />
+                <button type="button" class="button mt--10" onclick="submitSell()"> Sell </button>
+            </div>
+
+            <!-- Hidden inputs that oTree requires -->
+            <input type="hidden" name="token_purchased" id="token_purchased" value="0" />
+            <input type="hidden" name="token_sold" id="token_sold" value="0"/>
+
+            <!-- Continue button -->
+            <div class="mt-20">
+                <button class="button" disabled>Continue</button>
+            </div>
+        </form>
+
+        <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
+            Every time someone buys or sells a Token, it changes the price for the next day.
+        </p>
+    </div>
+</div>
+
+<div style="text-align: justify;">
+    The market operates under specific trading rules. Please swipe through the rules below to understand how the market works. <br>
+    <strong>Trading rules:</strong>
+</div>
+
+<div id="phaseSlider" style="position: relative; width: 100%; max-width: 700px; margin: auto; overflow: hidden; border-radius: 10px; background: #f8f8f8; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div class="slide" style="display: block;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/transaction_costs.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>1. Transaction fees</strong> <br>
+                    Each buy or sell transaction incurs a {{ transaction_costs }} DKK fee.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/no_money.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>2. No money</strong> <br>
+                    You cannot buy Token if you don't have enough money.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/not_enough_token.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>3. Not enough Token</strong> <br>
+                    You cannot sell more Token than you currently own.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/max_token.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>4. Maximum Token you can buy</strong> <br>
+                    You can only buy Token that you will be able to use before the week ends.
+                    If you already have more Token than you can use, or if buying more would push you over the limit, you will not be allowed to buy.
+                </td>
+            </tr>
+        </table>    
+    </div>
+    <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/max_token_once.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>5. Maximum Token you can buy at ONCE</strong> <br>
+                    You can only buy as many Token at once as you can use maximal the following day.
+                </td>
+            </tr>
+        </table>
+    </div>
+        <div class="slide" style="display: none;">
+        <table style="width: 90%; border-collapse: collapse; margin: auto;">
+            <tr>
+                <td style="padding: 20px; text-align: center;">
+                    <img src="{% static 'pics/token_price.png' %}" alt="leaf" style="width: 300px">
+                </td>
+                <td style="padding: 20px; text-align: justify; font-size: 14px;">
+                    <strong>6. Token price change</strong> <br>
+                    The price of a Token changes by 0.01 DKK for each Token bought or sold by any participant.
+                    A new Token price is calculated and shown after each market page is completed.
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Navigation Buttons -->
+    <button type="button" onclick="changeSlide(-1)" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❮</button>
+    <button type="button" onclick="changeSlide(1)" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❯</button>
+</div><br>
+    <div style="text-align: justify;">
+        From this point on, you will be making decisions at the same time as other participants.
+        Because of this, there is a time limit, and you will need to wait for everyone to finish before moving on.
+    </div><br> 
+
+    <h4 class="title-highlight">Check your understanding</h4>
+    <form method="post" style="font-size: 14px;">
+    <div class="question-block">
+        {{ form.price_change.label }}
+        {{ form.price_change }}
+        {{ formfield_errors 'price_change' }}
+    </div><br>
+    <div class="question-block">
+        {{ form.token_buy.label }}
+        {{ form.token_buy }}
+        {{ formfield_errors 'token_buy' }}
+    </div><br>
+
+    <button type="submit" id="submit-choice">Start the test week</button>  
+    </form>
+</div>
+
+
+<script>
+let slideIndex = 0;
+const slides = document.querySelectorAll("#phaseSlider .slide");
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.style.display = i === index ? "block" : "none";
+    });
+}
+function changeSlide(direction) {
+    slideIndex = (slideIndex + direction + slides.length) % slides.length;
+    showSlide(slideIndex);
+}
+document.addEventListener("DOMContentLoaded", () => {
+    showSlide(slideIndex);
+});
+</script>
+
+{{ endblock }}

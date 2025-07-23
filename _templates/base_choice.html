@@ -1,0 +1,123 @@
+
+<h3> {{ travel_day }} </h3>
+
+<!-- ==================== Section: Tour & Map Display ==================== -->
+<div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap">
+
+    <!-- ==================== Left Column: Travel Info =================== -->
+    <div style="flex: 1; min-width: 500px">
+        <!-- Travel Info Headline -->
+        <div class="max-width-left section-card mb-0">
+            <p class="mb-0">
+                {% include 'html_chunks/tour_display.html' with trip=preview_data_today %}
+            </p>
+        </div>
+        <!-- Map -->
+        <div id="map-static" class="max-width-left mb-10 p-6 section-card">
+            <img src="{{ map_src }}" 
+                class="max-width-left" alt="Trip Route Map" style="width: 100%" />
+        </div>
+    </div>
+
+    <!-- ==================== Right Column: Token Overview ==================== -->
+    <div class="min-width-rights  max-width-right" style="flex: 1; gap: 20px; display: flex; flex-direction: column">      
+        <!-- Token overview -->
+        {% include 'html_chunks/token_overview.html' %}
+    </div>
+</div>
+
+<!-- ==================== Section: Transport Mode Choice ==================== -->
+<div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap">
+    
+    <!-- ==================== Left Column: Choice ==================== -->
+    <div style="flex: 1; min-width: 500px">
+        <form method="post">
+            <!-- Transport Mode Table -->
+            <div class="max-width-left">
+                <table style="width: 100%">
+                {% for mode_info in modes %}
+                <tr>
+                    <td>
+                        <label>
+                            <input type="radio" name="choice" value="{{ mode_info.mode }}" required>
+                            {% if mode_info.mode == 'walking' %}
+                                <i class="fas fa-person-walking"></i>
+                            {% elif mode_info.mode == 'cycling' %}
+                                <i class="fas fa-biking"></i>
+                            {% elif mode_info.mode == 'transit' %}
+                                <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                            {% elif mode_info.mode == 'driving' %}
+                                <i class="fas fa-car-side"></i>
+                            {% elif mode_info.mode == 'driving_reschedule' %}
+                                <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                            {% endif %}
+                            {% if mode_info.mode == default_mode %}
+                                <br> <span style="color: var(--dark-teal)">(default)</span>
+                            {% endif %}
+                        </label>
+                    </td>
+                    <!-- Time & Distance Info -->
+                    <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
+                    </td>
+                    <!-- Cost & Token Info -->
+                    <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
+                        <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token 
+                    </td>
+                    <!-- Sustainability Rating -->
+                    <td> 
+                        <div class="mt--2">
+                            {% for is_filled in mode_info.rating %}
+                                {% if is_filled %}
+                                    <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                                {% else %}
+                                    <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </table>
+            </div>
+
+            <div id="token-warning" class="mt-20 p-12 warning-text" style="display: none">
+                <strong>Warning not enough Token:</strong> Auto-purchase triggered <br> Automatic purchase of the missing Token at current Token price + {{ auto_fee }} DKK fee.
+            </div>
+
+            <br>
+            {{ formfield_errors 'choice' }}
+
+            <!-- submit button -->
+            <button type="submit" class="button">Submit Choice</button>
+        </form>
+    </div>
+
+    <!-- ==================== Right Column: Budget Summary ==================== -->
+    <div class="min-width-rights  max-width-right" style="flex: 1; gap: 0px; display: flex; flex-direction: column">
+        <!-- Display Budget and Token -->
+        {% include 'html_chunks/budget_summary.html' %}
+    </div>
+</div>
+
+<!-- ==================== JavaScript: Token Warning Logic ==================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modesData = JSON.parse('{{ modes_js }}');
+    const availableTokens = parseInt("{{ token }}");
+    const warningBox = document.getElementById("token-warning");
+
+    // Show warning if selected mode exceeds available tokens
+    document.querySelectorAll('input[name="choice"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            const selectedMode = radio.value;
+            const requiredToken = parseInt(modesData[selectedMode].token || 0);
+
+            if (requiredToken > availableTokens) {
+                warningBox.style.display = "block";
+            } else {
+                warningBox.style.display = "none";
+            }
+        });
+    });
+});
+</script>

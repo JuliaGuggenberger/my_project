@@ -1,0 +1,19 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Market.html - Phase IV Token Market Interface                      -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonII.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== MARKET INFORMATION HEADER ======================== -->
+<h3> Phase II - Week {{ week }} of {{ max_week }} - Day {{ day_in_week }} of {{ num_trips }} </h3>
+    {% include 'base_market.html' %}
+
+{{ endblock }}

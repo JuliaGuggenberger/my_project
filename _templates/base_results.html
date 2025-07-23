@@ -1,0 +1,196 @@
+
+
+<!-- ==================== Section 1: Automated selling ==================== -->
+<br>
+<h4 class="title-highlight">Automated selling of unused Token</h4>
+
+<div class="summary-card" style="margin-top: -5px;">
+    <div class="mb-10">
+        <span class="text-bold-dark">Unused Token: </span>
+        <span class="text-bold-green">{{ token_sold }}</span>
+    </div>
+
+    <div class="mb-10">
+        <span class="text-bold-dark"> Added to budget: </span>
+        <span class="text-bold-green">{{ token_sold }}</span>
+        <span style="color: var(--summary-label-color);">Token × </span>
+        <span class="text-bold-orange">{{ token_price }}</span>
+        <span style="color: var(--summary-label-color);"> DKK</span>
+        {% if current_phase not in ('testI', 'testII') %}
+            <span style="color: var(--summary-label-color);"> - </span>
+            <span class="text-bold-orange">{{ transaction_costs }}</span>
+            <span style="color: var(--summary-label-color);"> DKK </span>
+        {% endif %}
+        <span style="color: var(--summary-label-color);">= </span>
+        <span class="text-bold-orange">{{ sellback_earnings }}</span>
+        <span style="color: var(--summary-label-color);">DKK</span>
+    </div>
+</div>
+
+<hr style="margin: 50px 0;">
+
+<!-- ==================== Section 2: Payoff/Environmental impact ==================== -->
+<div class="mb-20" style="display: flex; flex-wrap: wrap; gap: 20px">
+    {% if current_phase not in ('testI', 'testII') %}
+        <!-- Payoff Overview Column -->
+        <div style="flex: 1; min-width: 300px">
+            <h4 class="title-highlight">Payoff overview</h4>
+            {% if current_phase != 'I' %}
+            <div class="mb-20 p-10 border-left-phase">
+                {% for phase in phase_results %}
+                    <strong>{{ phase.name }}:</strong> Payoff: <strong>{{ phase.budget }}</strong> DKK <br>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <strong> Phase {{ current_phase }}: </strong>
+            {% for week in weekly_summary %}
+                {% if week.week <= current_week %}
+                    <div class="mb-20 p-10 border-left-phase">
+                        <strong>Week {{ week.week }}</strong><br>
+                        <div class="mb-10">
+                            <span style="color: var(--summary-label-color)">Monetary Budget: {{ week.budget }} DKK </span>
+                        </div>
+                        <div class="mb-10">
+                            <span class="text-bold-dark">Payoff: </span>
+                            <span class="main-budget" style="font-size: 20px; font-weight: bold; color: var(--budget-orange)">
+                            {% if week.budget < 0 %}
+                                0
+                            {% else %}
+                                {{ week.budget }}
+                            {% endif %}
+                            </span>
+                            <span style="color: var(--summary-label-color)">DKK</span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="mb-10">
+                <span class="text-bold-dark">Total payoff: </span>
+                <span style="font-size: 20px; font-weight: bold; color: var(--budget-orange)" id="main-budget"> {{ total_budget }} </span>
+                <span style="color: var(--summary-label-color)">DKK (excl. fixed payoff: </span>
+                <span style="font-size: 20px; font-weight: bold; color: var(--budget-orange)" id="main-budget"> 40 </span>
+                <span style="color: var(--summary-label-color)">DKK) </span>
+            </div>
+        </div>
+
+        <!-- Environmental Impact Column -->
+        <div style="flex: 1; min-width: 300px;">
+            <h4 class="title-highlight-green">Environmental Impact</h4>  
+            {% if current_phase != 'I' %}
+            <div class="mb-20 p-10 border-left-green">
+                {% for phase in phase_results %}
+                    <strong>{{ phase.name }}:</strong> Total Emissions Saved: <strong>{{ phase.emissions_saved }}</strong> kg CO₂eq <br>
+                {% endfor %}
+            </div>    
+            {% endif %}
+            <strong> Phase {{ current_phase }}: </strong>
+            {% for week in weekly_summary %}
+                {% if week.week <= current_week %}
+                    <div class="mb-20 p-10 border-left-green">
+                        <strong>Week {{ week.week }}</strong><br>
+                        Baseline Emissions: <strong>{{ week.baseline_emissions }}</strong> kg CO₂eq<br>
+                        Your Emissions: <strong>{{ week.actual_emissions }}</strong> kg CO₂eq<br>
+
+                        {% if week.emissions_saved >= 0 %}
+                            Emissions Saved: <strong style="color: var(--token-green)">{{ week.emissions_saved }}</strong> kg CO₂eq
+                        {% else %}
+                            Extra Emissions: <strong style="color: var(--red)">{{ week.emissions_excess }}</strong> kg CO₂eq
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <p>Total Emissions Saved: <strong>{{ total_emissions_saved }} kg CO₂eq</strong></p>
+            <p><em>{{ emissions_equivalent_sentence }}</em></p>
+        </div>
+    {% else %}
+
+    <!-- Budget Overview Column -->
+    <div style="flex: 1; min-width: 300px">
+        <h4 class="title-highlight">Budget overview</h4>
+        <strong> Test Phase: </strong>
+        {% for week in weekly_summary %}
+            {% if week.week <= current_week %}
+                <div class="mb-20 p-10 border-left-phase">
+                    <strong>Week {{ week.week }}</strong><br>
+                    <div class="mb-10">
+                        <span style="color: var(--summary-label-color)">Monetary Budget: {{ week.budget }} DKK </span>
+                    </div>
+                    <div class="mb-10">
+                        <span class="text-bold-dark">Payoff: </span>
+                            <span class="main-budget" style="font-size: 20px; font-weight: bold; color: var(--budget-orange)">
+                            {% if week.budget < 0 %}
+                                0
+                            {% else %}
+                                {{ week.budget }}
+                            {% endif %}
+                        </span>
+                        <span style="color: var(--summary-label-color)">DKK</span>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div> 
+
+    <!-- Environmental Impact Column -->
+    <div style="flex: 1; min-width: 300px;">
+        <h4 class="title-highlight-green">Environmental Impact</h4>
+        <strong> Test Phase: </strong>
+        {% for week in weekly_summary %}
+            {% if week.week <= current_week %}
+                <div class="mb-20 p-10 border-left-green">
+                    <strong>Week {{ week.week }}</strong><br>
+                    Baseline Emissions: <strong>{{ week.baseline_emissions }}</strong> kg CO₂eq<br>
+                    Your Emissions: <strong>{{ week.actual_emissions }}</strong> kg CO₂eq<br>
+
+                    {% if week.emissions_saved >= 0 %}
+                        Emissions Saved: <strong style="color: var(--token-green)">{{ week.emissions_saved }}</strong> kg CO₂eq
+                    {% else %}
+                        Extra Emissions: <strong style="color: var(--red)">{{ week.emissions_excess }}</strong> kg CO₂eq
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <p><em>{{ emissions_equivalent_sentence }}</em></p>
+    </div>
+{% endif %}
+</div>
+
+
+<!-- ==================== Section 3: Preview next week ==================== -->
+
+{% if current_week != max_week %}
+<hr style="margin: 50px 0;">
+
+    <h3 class="title-highlight">Phase {{ current_phase }} - Week {{ next_week }} - Preview</h3>
+    <div class="p-20">
+        <p>Below you can find a preview of your trips for the following week, along with your starting resources.</p>
+        
+        <!-- Preview table  -->
+        {% include 'html_chunks/token_preview.html' %}
+
+        <!-- Budget overview -->   
+        {% include 'html_chunks/budget_summary.html' %}
+        <br>
+
+        <!-- Continue button -->
+        <form method="post">
+            <button type="submit" class="button">Continue to week {{ next_week }}</button>
+        </form>
+    </div>
+{% elif current_phase == 'III' %}
+     <!-- Continue button -->
+    <form method="post">
+        <button type="submit" class="button">Continue to Post Survey </button>
+    </form>
+{% elif current_phase in ('testI', 'testII') %}
+     <!-- Continue button -->
+    <form method="post">
+        <button type="submit" class="button">Continue </button>
+    </form>
+{% else %}
+    <!-- Continue button -->
+    <form method="post">
+        <button type="submit" class="button">Continue to Phase {{ next_phase }} </button>
+    </form>
+{% endif %}

@@ -1,0 +1,39 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- NoCommute.html - Phase III No Commute Interface                      -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== No Commute HTML ======================== -->
+<h1 class="title-highlight"> Test Phase II - Week {{ week }} of {{ max_week }} - Day {{ day_in_week }} of 5 </h1>
+<h3> {{ travel_day }} </h3>
+
+<div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap">
+    <!-- ====== Column 1: No Commute display ==== -->
+    <div style="flex: 1; min-width: 500px">
+            <hr class="hr-separator">
+            <span class="subtitle"> No commute today! </span>
+            <hr class="hr-separator">
+            <br>
+            <br>
+            <br>
+            <!-- Display Budget and Token -->
+            {% include 'html_chunks/budget_summary.html' %}
+            <br>
+            <br>
+        <button type="submit" class="button">Continue</button>
+    </div>
+
+    <!-- ====== Column 2: Token overview ==== -->
+    <div class="min-width-left  max-width-left" style="flex: 1; gap: 20px; display: flex; flex-direction: column">
+        {% include 'html_chunks/token_overview.html' %}
+    </div>
+</div>
+
+{{ endblock }}

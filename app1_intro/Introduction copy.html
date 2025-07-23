@@ -1,0 +1,543 @@
+{{ block content }}
+
+<head>
+    <!-- Include Font Awesome icon library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+
+<div style="font-family: Arial, sans-serif; max-width: 700px; line-height: 1.6;">
+  <h2 class="title-highlight">Welcome to the Tradable Credit Scheme Experiment</h2>
+  <p style="text-align: justify; font-size: 14px;">
+    In this experiment, you will help us to test a road pricing scheme designed to reduce CO2eq emissions
+    <span class="tooltip-icon" style=" transform: scale(0.8); transform-origin: top left;">
+        <span class="info-circle">i</span>
+        <span class="tooltip-text">CO₂ equivalent (CO₂eq) is a standard unit for measuring carbon footprints. It expresses the impact of all greenhouse gases in terms of the amount of CO₂ that would create the same amount of warming.</span>
+    </span>.
+    The results will provide valuable insights for implementing the Transport Carbon System (TCS) in the real-world. <br>
+    The idea behind the TCS is to give everyone a limited number of Token, which are required for commuting. Each Token represents 1 kg of CO₂-equivalent emissions. If you need more Token, you can buy them; if you have extra, you can sell them.
+  </p>
+
+  <h4 class="title-highlight">Experimental procedure</h4>
+  <div class="mb-20 p-10 border-left-phase">
+    <h6 class="title-highlight">1. Token and budget allocation</h6>
+    <p style="text-align: justify; font-size: 14px;">
+        You receive the number of Token needed for your <strong>one-week commute</strong>, as reported in your travel diary. A new allocation will be provided each week.
+        Below, you can see your weekly commuting trips and the number of Token allocated to you <strong>based on the mode of transport you reported</strong> (Base Token). The "Average Token" column shows how many Token you need on average each day.
+    </p>
+    <div style="width: 154%; height: 270px; overflow: hidden; margin-top: -30px;">
+      <div style=" transform: scale(0.65); transform-origin: top left;">
+        {% include 'html_chunks/token_preview.html' %}
+      </div>
+    </div>
+    <p style="text-align: justify; font-size: 14px;">
+        Each week, you receive a <strong>Token Budget</strong> and a <strong>Monetary Budget</strong> to use for commuting and trading. You will also see the current Token price, which may change after trading based on the market activity.
+    </p>
+    <div style="width: 154%; height: 130px; overflow: hidden; margin-top: -30px;">
+      <div style="display: inline-block; transform: scale(0.65); transform-origin: top left;">
+        <div class="min-width-rights  max-width-right">
+            <!-- Display Budget and Token -->
+            {% include 'html_chunks/budget_summary.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-20 p-10 border-left-phase">
+    <h6 class="title-highlight">2. Market decision</h6> 
+    <p style="text-align: justify; font-size: 14px;">
+        Before each trip, you can choose to <strong>buy</strong>, <strong>sell</strong>, or to <strong>keep</strong> your current Token balance. The market operates under specific trading rules, but there's no need to memorize them, the system will display error messages if you attempt an invalid action.
+    </p>
+    <div style="display: flex; width:100%; gap: 0px; margin-bottom: 40px; margin-top: -30px;">    
+      <div style="flex: 1">
+        <div style="width: 150%; height: 350px; overflow: hidden;">
+          <div style=" transform: scale(0.5); transform-origin: top left;">
+            <div style="width:90%" class="market-container">
+              <h2 class="title-highlight" style="text-align: center">Token Market</h2>
+
+              <div class="market-info">       
+                  <!-- Budget overview -->
+                  {% include 'html_chunks/budget_summary.html' %}
+                  <br>      
+              </div>
+
+              <!-- ==================== Market Form ==================== -->
+              <form id="market-form" method="post">
+                  <!-- BUY SECTION -->
+                  <label for="visible_buy"><strong>Buy Token:</strong></label>
+                  <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                      <input type="number" id="visible_buy" min="0" placeholder="0" class="p-6"
+                          style="width: 230px; font-size: 14px" />
+                      <button type="button" class="button mt--10" onclick="submitBuy()"> Buy </button>
+                  </div>
+                  
+                  <!-- SELL SECTION -->
+                  <label for="visible_sell"><strong>Sell Token:</strong></label>
+                  <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                      <input type="number" id="visible_sell" min="0" placeholder="0" class="p-6"
+                          style="width: 230px; font-size: 14px" />
+                      <button type="button" class="button mt--10" onclick="submitSell()"> Sell </button>
+                  </div>
+
+                  <!-- Hidden inputs that oTree requires -->
+                  <input type="hidden" name="token_purchased" id="token_purchased" value="0" />
+                  <input type="hidden" name="token_sold" id="token_sold" value="0"/>
+
+                  <!-- Continue button -->
+                  <div class="mt-20">
+                      <button class="button" disabled>Continue</button>
+                  </div>
+              </form>
+
+              <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
+                  Every time someone buys or sells a Token, it changes the price for the next day.
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="flex: 1; margin-left: -90px; font-size: small;">
+      <br>
+      <strong>Trading rules:</strong>
+      <ul>
+        <li>Each buy or sell transaction incurs a 0.5 DKK fee</li>
+        <li>You cannot buy Token if you don't have enough money</li>
+        <li>You cannot sell more Token than you currently own</li>
+        <li>You cannot buy more Token than you can use during the week</li>
+        <li>You cannot buy more Token than you can use the next day</li>
+        <li>The Token price increases or decreases by <strong>0.01 DKK</strong> for each Token bought or sold across all participants</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="mb-20 p-10 border-left-phase">
+    <h6 class="title-highlight">3. Commuting decision</h6>
+    <p style="text-align: justify; font-size: 14px;">
+        Choose how you want to commute on a given day. Each option represents your entire round-trip from home to work and back. Please make your selection based on your <strong>actual commuting habits</strong>.
+    </p>
+    <br>
+        <div style="width: 150%; height: 200px; overflow: hidden; margin-top: -30px;">
+          <div style=" transform: scale(0.56); transform-origin: top left;">
+            <form method="post">
+            <!-- Transport Mode Selection Table -->
+            <div class="max-width-left">
+            <table style="width: 100%">
+            {% for mode_info in modes %}
+            <tr>
+                <td>
+                        {% if mode_info.mode == 'walking' %}
+                            <i class="fas fa-person-walking"></i>
+                        {% elif mode_info.mode == 'cycling' %}
+                            <i class="fas fa-biking"></i>
+                        {% elif mode_info.mode == 'transit' %}
+                            <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                        {% elif mode_info.mode == 'driving' %}
+                            <i class="fas fa-car-side"></i>
+                        {% elif mode_info.mode == 'driving_reschedule' %}
+                            <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                        {% endif %}
+                        {% if mode_info.mode == default_mode %}
+                            <br> <span style="color: var(--dark-teal)">(default)</span>
+                        {% endif %}
+                </td>
+                <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
+                    <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
+                    <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                <td> 
+                    <div class="mt--2">
+                        {% for is_filled in mode_info.rating %}
+                            {% if is_filled %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                            {% else %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div style="font-size:14px;">
+      <strong>Choice set:</strong>
+        <ul>
+            <li style="margin-bottom: 6px;">
+                <i class="fas fa-person-walking"></i> (Walking), 
+                <i class="fas fa-biking"></i> (Biking), 
+                <i class="fas fa-train"></i> <i class="fas fa-bus"></i> (Public Transport), 
+                <i class="fas fa-car-side"></i> (Driving)
+            </li>
+            <li style="margin-bottom: 6px;"><i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></i></sup>: Arriving {{ buffer }} minutes earlier at work to avoid congestion and save Token</li>
+            <li style="margin-bottom: 6px;">
+                <img src="{% static 'icons/time.png' %}" alt="time" style="width: 14px"> (Total time), 
+                <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 14px"> (Token needed)
+            </li>
+            <li style="margin-bottom: 6px;"><img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 14px">: Total cost of this mode, including personal effort and level of inconvenience</li>
+            <li style="margin-bottom: 6px;"><img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 14px">: Environmental friendliness (5 = most eco-friendly)</li>
+            <li style="margin-bottom: 6px;"><span style="color: var(--dark-teal)">(default)</span>: This is the mode from your travel diary and will be selected automatically if no choice is made in time</li>
+            <li style="margin-bottom: 6px;"><strong>Not enough Token to commute?</strong> The required Token will be automatically purchased at the current price plus a 10 DKK fee</li>
+            <li style="margin-bottom: 6px;"><strong>Leftover Token?</strong> Any unused Token will be sold at the current price minus transaction costs</li>
+        </ul>
+
+    </div>
+</div>
+
+<h4 class="title-highlight">The 5 Phases</h4>
+
+<p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+  The experiment is divided into five phases. Each of the first three phases lasts one week and are designed to help you become familiar with the scheme:
+</p>
+<p style="color: #538C52; margin-left: 14px; font-size: 14px; margin-bottom: 0px;"><strong>Phase I</strong>: No Token and no trading</p>
+<p style="color: #477A46; margin-left: 14px; font-size: 14px; margin-bottom: 0px;"><strong>Phase II</strong>: Token introduced, but no trading</p>
+<p style="color: #3B643A; margin-left: 14px; font-size: 14px;"><strong>Phase III</strong>: Token and trading enabled</p>
+
+<p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+  In Phases IV and V, Token allocations are reduced to 80% of the original amount to help achieve an emissions reduction target. Both phases last two weeks and your performance in these phases determines your final payoff. In Phase V, the allocation method changes: Token are distributed equally based on the distance you travel, regardless of transport mode or vehicle.
+</p>
+<p style="color: #C39E17; margin-left: 14px; font-size: 14px; margin-bottom: 0px;"><strong>Phase IV</strong>: Reduced Token allocation</p>
+<p style="color: #731F69; margin-left: 14px; font-size: 14px;"><strong>Phase V</strong>: Reduced and distance-based equal Token allocation</p>
+
+<!-- ==================== Phase Preview Slider ==================== -->
+<h6 class="title-highlight">Preview of Experiment Phases</h6>
+<div id="phaseSlider" style="position: relative; width: 100%; max-width: 700px; margin: auto; overflow: hidden; border-radius: 10px; background: #f8f8f8; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div class="slide" style="display: block;">
+        <div style="padding: 20px; margin-left: 20px;">
+            <h6 style="color: #538C52; margin-bottom: 0px;"><strong>Phase I</strong>: No Token and no trading</h6>
+            <p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+                In this phase you only have the different commuting options with the assosciated costs. See below the choice set representing one day and the Monetary Budget of one week.
+            </p>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 400px; width: 200%; overflow-y: auto;">
+                <form method="post">
+                <!-- Transport Mode Table -->
+                <div class="max-width-left">
+                    <table style="width: 100%">
+                    {% for mode_info in modes %}
+                    <tr>
+                        <td>
+                            {% if mode_info.mode == 'walking' %}
+                            <i class="fas fa-person-walking"></i>
+                            {% elif mode_info.mode == 'cycling' %}
+                            <i class="fas fa-biking"></i>
+                            {% elif mode_info.mode == 'transit' %}
+                            <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                            {% elif mode_info.mode == 'driving' %}
+                            <i class="fas fa-car-side"></i>
+                            {% elif mode_info.mode == 'driving_reschedule' %}
+                            <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br>
+                        </td>
+                        <td>
+                            <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">:
+                            <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK
+                        </td>
+                        <td>
+                            <div class="mt--2">
+                                {% for is_filled in mode_info.rating %}
+                                {% if is_filled %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                                {% else %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+                </form>
+            </div>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 50px; margin-top: -200px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label">Monetary Budget:</div>
+                        <div class="summary-value">
+                            <span style="color: var(--budget-orange)">{{ budget }}</span>
+                            <span class="summary-unit">DKK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" style="display: none;">
+        <div style="padding: 20px; margin-left: 20px;">
+            <h6 style="color: #477A46; margin-bottom: 0px;"><strong>Phase II</strong>: Token introduced, but no trading</h6>
+            <p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+                Additionally, to Phase I the commuting options now also includes Token.
+                See below the choice set representing one day and the Budget and Token price summary for one week.
+            </p>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 400px; width: 200%; overflow-y: auto;">
+                <form method="post">
+                <!-- Transport Mode Table -->
+                <div class="max-width-left">
+                    <table style="width: 100%">
+                    {% for mode_info in modes %}
+                    <tr>
+                        <td>
+                            {% if mode_info.mode == 'walking' %}
+                            <i class="fas fa-person-walking"></i>
+                            {% elif mode_info.mode == 'cycling' %}
+                            <i class="fas fa-biking"></i>
+                            {% elif mode_info.mode == 'transit' %}
+                            <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                            {% elif mode_info.mode == 'driving' %}
+                            <i class="fas fa-car-side"></i>
+                            {% elif mode_info.mode == 'driving_reschedule' %}
+                            <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br>
+                        </td>
+                        <td>
+                            <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br>
+                            <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token
+                        </td>
+                        <td>
+                            <div class="mt--2">
+                                {% for is_filled in mode_info.rating %}
+                                {% if is_filled %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px">
+                                {% else %}
+                                <img src="{% static 'icons/leaf.png' %}" alt="leaf" style="width: 16px; opacity: 0.2">
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+                </form>
+            </div>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 100px; margin-top: -200px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label">Current Token Price:</div>
+                        <div class="summary-value"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                        <div class="summary-label">Monetary Budget:</div>
+                        <div class="summary-value"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
+                        <div class="summary-label">Token Budget:</div>
+                        <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" style="display: none;">
+        <div style="padding: 20px; margin-left: 20px;">
+            <h6 style="color: #3B643A; margin-bottom: 0px;"><strong>Phase III</strong>: Token and trading enabled</h6>
+            <p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+                Additionally, to the choice set in Phase II a market will be introduced. You have the option to buy or sell Token before making the commuting choice.
+            </p>
+            <div style="width: 100%; height: 350px; overflow: hidden;">
+                <div style=" transform: scale(0.5); transform-origin: top left;">
+                    <div style="width:90%" class="market-container">
+                    <h2 class="title-highlight" style="text-align: center">Token Market</h2>
+                        <div class="market-info">       
+                            {% include 'html_chunks/budget_summary.html' %}
+                            <br>      
+                        </div>
+                        <form id="market-form" method="post">
+                            <!-- BUY SECTION -->
+                            <label for="visible_buy"><strong>Buy Token:</strong></label>
+                            <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                                <input type="number" id="visible_buy" min="0" placeholder="0" class="p-6" 
+                                    style="width: 230px; font-size: 14px" />
+                                <button type="button" class="button mt--10" onclick="submitBuy()"> Buy </button>
+                            </div>
+                            
+                            <!-- SELL SECTION -->
+                            <label for="visible_sell"><strong>Sell Token:</strong></label>
+                            <div class="mb-12" style="display: flex; align-items: center; gap: 8px">
+                                <input type="number" id="visible_sell" min="0" placeholder="0" class="p-6"
+                                    style="width: 230px; font-size: 14px" />
+                                <button type="button" class="button mt--10" onclick="submitSell()"> Sell </button>
+                            </div>
+
+                            <!-- Hidden inputs that oTree requires -->
+                            <input type="hidden" name="token_purchased" id="token_purchased" value="0" />
+                            <input type="hidden" name="token_sold" id="token_sold" value="0"/>
+
+                            <!-- Continue button -->
+                            <div class="mt-20">
+                                <button class="button" disabled>Continue</button>
+                            </div>
+                        </form>
+
+                    <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
+                        Every time someone buys or sells a Token, it changes the price for the next day.
+                    </p>
+                </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div class="slide" style="display: none;">
+        <div style="padding: 20px; margin-left: 20px;">
+            <h6 style="color: #C39E17; margin-bottom: 0px;"><strong>Phase IV</strong>: Reduced Token allocation</h6>
+            <p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+                You will have now 20 % less Token for commuting.
+            </p>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 100px; margin-top: -20px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                        <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
+                        <div class="summary-label">Token Budget:</div>
+                        <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 40px; color: var(--dark-teal);margin-left: 180px; margin-top: -10px; margin-bottom: -50px;">
+                &#8659;
+            </div>
+
+            <div style="transform: scale(0.65); transform-origin: top left; height: 100px; margin-top: -20px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                        <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget_reduced }}</span><span class="summary-unit">DKK</span></div>
+                        <div class="summary-label">Token Budget:</div>
+                        <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">Token</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="slide" style="display: none;">
+ <div style="padding: 20px; margin-left: 20px;">
+            <h6 style="color: #731F69; margin-bottom: 0px;"><strong>Phase V</strong>: Reduced and distance-based equal Token allocation</h6>
+            <p style="text-align: justify; font-size: 14px; margin-bottom: 0px;">
+                In Phase V, you still have 20% fewer Token, but unlike before, Token are distributed based solely on commuting distance rather than the mode of transport. This means the Token allocation only depends on the distance, regardless of which mode you chose in the travel diary.
+            </p>
+            <div style="transform: scale(0.65); transform-origin: top left; height: 100px; margin-top: -20px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                        <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget_reduced }}</span><span class="summary-unit">DKK</span></div>
+                        <div class="summary-label">Token Budget:</div>
+                        <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">Token</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 40px; color: var(--dark-teal);margin-left: 180px; margin-top: -10px; margin-bottom: -50px;">
+                &#8659;
+            </div>
+
+            <div style="transform: scale(0.65); transform-origin: top left; height: 100px; margin-top: -20px;">
+                <div class="summary-card">
+                    <div class="summary-grid">
+                        <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                        <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                        <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget_reduced }}</span><span class="summary-unit">DKK</span></div>
+                        <div class="summary-label">Token Budget:</div>
+                        <div class="summary-value"><span style="color: var(--token-green)">??</span> <span class="summary-unit">Token</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button type="button" onclick="changeSlide(-1)" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❮</button>
+    <button type="button" onclick="changeSlide(1)" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+        background: none; border: none; font-size: 24px; padding: 10px; cursor: pointer; color: var(--dark-teal)">❯</button>
+</div>
+<br>
+Any leftover budget at the end of each week in Phases IV and V will be added to your final payoff.
+<br>
+<br>
+<h4 class="title-highlight">Check of understanding</h4>
+
+<form method="post" style="font-size: 14px;"" >
+    <label>What kind of travel decision do you have to make? </label><br>
+    <input type="radio" name="travel_decision" value="1"> One commute to work<br>
+    <input type="radio" name="travel_decision" value="2"> Commute to work and back<br>
+    <input type="radio" name="travel_decision" value="3"> All trips of one day<br><br>
+
+    <label>What happens if you do not have enough Token?</label><br>
+    <input type="radio" name="not_enough_token" value="1"> You cannot commute by car<br>
+    <input type="radio" name="not_enough_token" value="2"> Token are automatically bought including a fee<br>
+    <input type="radio" name="not_enough_token" value="3"> You need to go back to the market and buy additional Token<br><br>
+
+    <label>What causes the Token price to change? </label><br>
+    <input type="radio" name="price_change" value="1"> The Token price does not change<br>
+    <input type="radio" name="price_change" value="2"> Amount of Token you trade<br>
+    <input type="radio" name="price_change" value="3"> Amount of Token everyone trades<br><br>
+
+    <label>What determines your final payoff? </label><br>
+    <input type="radio" name="final_payoff" value="1"> Your performance in Phase IV and Phase V<br>
+    <input type="radio" name="final_payoff" value="2"> Your performance in all Phases<br>
+    <input type="radio" name="final_payoff" value="3"> Your final payoff is fixed<br><br>
+
+    <label>How long are your Token valid? </label><br>
+    <input type="radio" name="token_valid" value="1"> For 1 Phase<br>
+    <input type="radio" name="token_valid" value="2"> For 1 week<br>
+    <input type="radio" name="token_valid" value="3"> They don't lose validity<br><br>
+
+    <label>What do costs represent? </label><br>
+    <input type="radio" name="cost_structure" value="1"> Cost for mode and individual costs<br>
+    <input type="radio" name="cost_structure" value="2"> Costs for mode<br>
+    <input type="radio" name="cost_structure" value="3"> They are random<br><br>
+
+    <label>How does equal allocation differ? </label><br>
+    <input type="radio" name="equal_allocation" value="1"> Everyone gets the same amount of Token<br>
+    <input type="radio" name="equal_allocation" value="2"> Everyone gets the same amount of budget<br>
+    <input type="radio" name="equal_allocation" value="3"> Token allocation only depends on distance and not mode used<br><br>
+    
+    <label>What means <span style="color: var(--dark-teal); font-weight: normal;">default</span> in the choice set? </label><br>
+    <input type="radio" name="default_mode" value="1"> This is the mode from your Travel Diary and will be chosen if you run out of time<br>
+    <input type="radio" name="default_mode" value="2"> Indicates the best mode<br>
+    <input type="radio" name="default_mode" value="3"> Indicates the most environmental-friendly mode<br><br>
+
+    <button type="submit" id="submit-choice">Start the experiment</button>
+</form>
+
+{{ formfield_errors 'travel_decision' }}
+{{ formfield_errors 'not_enough_token' }}
+{{ formfield_errors 'price_change' }}
+{{ formfield_errors 'final_payoff' }}
+{{ formfield_errors 'token_valid' }}
+{{ formfield_errors 'cost_structure' }}
+{{ formfield_errors 'equal_allocation' }}
+
+<script>
+let slideIndex = 0;
+const slides = document.querySelectorAll("#phaseSlider .slide");
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.style.display = i === index ? "block" : "none";
+    });
+}
+function changeSlide(direction) {
+    slideIndex = (slideIndex + direction + slides.length) % slides.length;
+    showSlide(slideIndex);
+}
+document.addEventListener("DOMContentLoaded", () => {
+    showSlide(slideIndex);
+});
+</script>
+
+{{ endblock }}

@@ -1,0 +1,17 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- Results.html - Test Phase I Results Interface                            -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonintro.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== RESULTS HTML ======================== -->
+<h3 class="title-highlight">Test Phase I - Week {{ current_week }} - Results</h3>
+    {% include 'base_results.html' %}
+
+{{ endblock }}

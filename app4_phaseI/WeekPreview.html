@@ -1,0 +1,30 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- WeekPreview.html - Phase IV Token Market Interface                   -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonI.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== Week Preview HTML ======================== -->
+<h1 class="title-highlight">Phase I - Week {{current_week}} - Preview</h1>
+
+<div class="p-20">
+    <!-- Token preview table  -->
+    {% include 'html_chunks/token_preview.html' %}
+
+    <!-- Budget overview -->
+    {% include 'html_chunks/budget_summary.html' %}
+    <br>
+
+    <!-- Submit button -->
+    <form method="post">
+         <button type="submit" class="button">Continue to week {{ current_week }}</button>
+    </form>
+</div>
+
+{{ endblock }}

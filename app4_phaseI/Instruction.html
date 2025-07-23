@@ -1,0 +1,73 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- WeekPreview.html - Phase I Instructions                              -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonI.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== Week Preview HTML ======================== -->
+<h1 class="title-highlight">Phase I - Reduced Token allocation</h1>
+
+<div style="text-align: justify;">
+    The experiment and therefore the payoff period will start. <br>
+    Compared to the previous phase, your <strong>starting Token budget is reduced</strong>. This will require more strategic use of your resources.
+    Everything else remains the same as in the test phase. The change of the Token price will be taken over to the next week and phase
+    <div style="transform: scale(0.7); transform-origin: top left; height: 100px; margin-top: -20px; width: 50%;">
+        <div class="summary-card">
+            <div class="summary-grid">
+                <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
+                <div class="summary-label">Token Budget:</div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size: 40px; color: var(--dark-teal);margin-left: 150px; margin-top: -10px; margin-bottom: -50px;">
+        &#8659;
+    </div>
+
+    <div style="transform: scale(0.7); transform-origin: top left; height: 100px; margin-top: -20px; width: 50%;">
+        <div class="summary-card">
+            <div class="summary-grid">
+                <div class="summary-label" style="opacity: 0.6">Current Token Price:</div>
+                <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ token_price }}</span> <span class="summary-unit">DKK per Token</span></div>
+                <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
+                <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
+                <div class="summary-label">Token Budget:</div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">Token</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+    <br>
+    <strong>Your payoff </strong> is the amount of money you can take home after the experiment. It will depend on how much of your weekly budget remains at the end.
+
+
+</div><br>
+    <h4 class="title-highlight">Check your understanding</h4>
+    <form method="post" style="font-size: 14px;">
+    <div class="question-block">
+        {{ form.payoff_deter.label }}
+        {{ form.payoff_deter }}
+        {{ formfield_errors 'payoff_deter' }}
+    </div><br>
+    <div class="question-block">
+        {{ form.token_price.label }}
+        {{ form.token_price }}
+        {{ formfield_errors 'token_price' }}
+    </div><br>
+
+    <button type="submit" id="submit-choice">Start the test week</button>  
+    </form>
+</div>
+
+
+{{ endblock }}

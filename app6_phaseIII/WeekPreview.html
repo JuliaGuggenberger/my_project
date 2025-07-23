@@ -1,0 +1,32 @@
+{{ block content }}
+{% load static %}
+<!-- ==================================================================== -->
+<!-- WeekPreview.html - Phase III Token Market Interface                   -->
+<!-- ==================================================================== -->
+
+<!-- =============================== HEAD =============================== -->
+<head>
+    <link href="{% static 'common.css' %}" rel="stylesheet">
+    <link href="{% static 'commonIII.css' %}" rel="stylesheet">
+</head>
+
+<!-- ======================== Week Preview HTML ======================== -->
+<h1 class="title-highlight">Phase III - Week {{current_week}} - Preview</h1>
+
+<div class="p-20">
+    <p>Welcome to <strong>Phase V - Reduced and distance-based equal Token allocation</strong>. You still have 20% fewer Token, but unlike before, Token are distributed based solely on commuting distance rather than the mode of transport. This means the Token allocation only depends on the distance, regardless of which mode you chose in the travel diary.</p>
+
+    <!-- Token preview table  -->
+    {% include 'html_chunks/token_preview.html' %}
+
+    <!-- Budget overview -->
+    {% include 'html_chunks/budget_summary.html' %}
+    <br>
+
+    <!-- Submit button -->
+    <form method="post">
+         <button type="submit" class="button">Continue to week {{ current_week }}</button>
+    </form>
+</div>
+
+{{ endblock }}
