@@ -7,10 +7,10 @@
 #***********************************************************************************************
 def timeout_sec(page=None):
     timeouts = {
-        'market': 1000,
-        'choice': 1000,
+        'market': 100,
+        'choice': 100,
     }
-    return timeouts.get(page, 1000)
+    return timeouts.get(page, 100)
 
 #***********************************************************************************************
 def clean_zero(x):
@@ -81,18 +81,28 @@ def preview_overview_data(trips, weekly_choices=None):
 
 #***********************************************************************************************
 # Choice set
-def choice_set(poss_modes, trip):
+def choice_set(poss_modes, trip, vary = False, current_phase='I', week=0, day_in_week=0):
     modes = []
     for mode in poss_modes:
         rating = trip.get(f"rating_{mode}", 0)
         leaf_row = [True if i < rating else False for i in range(5)]
-        modes.append({
-            'mode': mode,
-            'time': format_minutes_to_hm(trip.get(f'tour_total_duration_min_{mode}')),
-            'cost': clean_zero(trip.get(f'tour_total_cost_{mode}')),
-            'token': int(trip.get(f'tour_total_token_{mode}')),
-            'rating': leaf_row
-        })
+
+        if vary:
+            modes.append({
+                'mode': mode,
+                'time': format_minutes_to_hm(trip.get(f'tour_total_duration_min_{mode}')),
+                'cost': clean_zero(trip.get(f'tour_total_cost_{mode}_vary_{current_phase}_{week}_{day_in_week}')),
+                'token': int(trip.get(f'tour_total_token_{mode}')),
+                'rating': leaf_row
+            })
+        else:
+            modes.append({
+                'mode': mode,
+                'time': format_minutes_to_hm(trip.get(f'tour_total_duration_min_{mode}')),
+                'cost': clean_zero(trip.get(f'tour_total_cost_{mode}')),
+                'token': int(trip.get(f'tour_total_token_{mode}')),
+                'rating': leaf_row
+            })
 
     return modes
 

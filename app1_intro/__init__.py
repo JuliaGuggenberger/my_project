@@ -143,7 +143,7 @@ class Introduction(Page):
         # === Mode Information for Current Trip ===
         poss_modes = trip.get('possible_modes')
         poss_modes = ast.literal_eval(poss_modes)
-        modes = choice_set(poss_modes, trip)
+        modes = choice_set(poss_modes, trip, vary = False, current_phase='I', week=0, day_in_week=0)
 
         # Return Template Variables
         return dict(

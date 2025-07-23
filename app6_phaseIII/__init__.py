@@ -191,7 +191,7 @@ class Choice(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return choice_vars_for_template(player, C.NUM_ROUNDS, current_phase = 'III', AUTO_FEE=C.AUTO_FEE)
+        return choice_vars_for_template(player, C.NUM_ROUNDS, current_phase = 'III', AUTO_FEE=C.AUTO_FEE, vary=True)
     
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -225,7 +225,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'III')
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'III', vary=True)
 
 
     @staticmethod

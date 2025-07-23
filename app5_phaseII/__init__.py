@@ -69,21 +69,34 @@ class Instruction(Page):
         return player.round_number == 1 
 
     @staticmethod
-    def vars_for_template(player):
-        # Initialize Week and Budget
-        player.budget = player.participant.vars['initial_budget']
-        player.token_old = player.participant.vars['initial_token']
-        player.token = player.participant.vars['initial_token_reduced']
-        player.group.token_price = player.participant.vars.get('token_price_next_round', C.INITIAL_PRICE)
+    def vars_for_template(player):    
+        # Load Trip Data for Preview
+        trips = player.participant.vars['all_trips']
+        trip_index = (player.round_number - 1) % len(trips)
+        while trip_index < len(trips) and trips[trip_index]['mode'] == 'no_commute':
+            trip_index += 1
+        player.participant.vars['trip_choices'] = []
+        trip = trips[trip_index]
+        buffer = trip['early_buffer']
+        preview_data, total_base, _ = preview_overview_data(trips, weekly_choices=False)
+
+        # === Mode Information for Current Trip ===
+        poss_modes = trip.get('possible_modes')
+        poss_modes = ast.literal_eval(poss_modes)
+        modes = choice_set(poss_modes, trip, vary = False, current_phase='I', week=0, day_in_week=0)
 
         # Return Template Variables
         return dict(
-            budget=clean_zero(player.budget),
-            token=int(player.token_old),
-            token_reduced=int(player.token),
-            token_price=clean_zero(player.group.token_price),
-            page_name='intro',
-        )
+            budget=clean_zero(player.participant.vars['initial_budget']),
+            token=int(player.participant.vars['initial_token']),
+            token_price=clean_zero(player.participant.vars['token_price_history'][-1]),
+            default_mode=trip['mode'],
+            preview_data=preview_data,
+            total_base_token=total_base,
+            page_name='weekpreview',
+            buffer=buffer,
+            modes=modes,
+        ) 
 
 # ======== WeekPreview ========
 class WeekPreview(Page):
@@ -142,7 +155,7 @@ class Choice(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return choice_vars_for_template(player, C.NUM_ROUNDS, current_phase = 'II', AUTO_FEE=C.AUTO_FEE)
+        return choice_vars_for_template(player, C.NUM_ROUNDS, current_phase = 'II', AUTO_FEE=C.AUTO_FEE, vary=True)
     
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -176,7 +189,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'II')
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'II',vary=True)
 
 
     @staticmethod

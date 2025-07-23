@@ -15,7 +15,7 @@ import ast
 # Choice
 #***********************************************************************************************
 # vars_for_template
-def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='commute', AUTO_FEE=10):
+def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='commute', AUTO_FEE=10, vary=False):
     # === Basic Setup ===
     trips = player.participant.vars['all_trips']
     trip_choices = player.participant.vars.get('trip_choices', [])
@@ -41,7 +41,7 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
     preview_data, total_base, total_token_used = preview_overview_data(trips, weekly_choices=weekly_choices)
 
     # === Mode Information for Current Trip ===
-    modes = choice_set(poss_modes, trip)
+    modes = choice_set(poss_modes, trip, vary = vary, current_phase=current_phase, week=week, day_in_week=day_in_week)
 
     # === Map Resource Path ===
     map_src = f"/static/maps/map_{player.participant.vars['entered_code']}_{trip['day']}.png"
@@ -182,7 +182,7 @@ def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase=
 # Market
 #***********************************************************************************************
 # vars_for_template
-def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_COSTS, current_phase = 'V'):
+def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_COSTS, current_phase = 'V', vary=False):
     # === Basic Setup ===
     trips = player.participant.vars['all_trips']
     trip_choices = player.participant.vars.get('trip_choices', [])
@@ -241,7 +241,7 @@ def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_
 
 
     # === Mode Information for Current Trip ===
-    modes = choice_set(poss_modes, trip)
+    modes = choice_set(poss_modes, trip, vary=vary, current_phase=current_phase, week=week, day_in_week=day_in_week)
 
     # === Final Context for Template Rendering ===
     return dict(
