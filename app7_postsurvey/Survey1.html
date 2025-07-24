@@ -49,8 +49,16 @@
   </div><br>
   <div class="question-block">
     {{ form.strategy_description.label }}
-    {{ form.strategy_description }}
+    <div id="strategy_description">
+      {{ form.strategy_description }}
+    </div>
     {{ formfield_errors 'strategy_description' }}
+
+    <div id="familiar_currency-other-container" style="display:none;">
+      {{ form.strategy_description_other.label }}
+      {{ form.strategy_description_other }}
+      {{ formfield_errors 'strategy_description_other' }}
+    </div>
   </div><br>
   <div class="question-block">
     {{ form.minimization_focus.label }}
@@ -89,6 +97,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     toggleOtherField("familiar_currency", "4", "familiar_currency-other-container");
+    toggleOtherField("strategy_description", "4", "strategy_description-other-container");
   });
 </script>
 

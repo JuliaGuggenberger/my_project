@@ -33,6 +33,15 @@ SESSION_CONFIG_DEFAULTS = dict(
 PARTICIPANT_FIELDS = []
 SESSION_FIELDS = []
 
+ROOMS = [
+    dict(
+        name='LEE',
+        display_name='LEE',
+        participant_label_file='Participants.txt',
+    ),
+]
+
+
 # ==============================================================================
 # Templates
 # ==============================================================================
