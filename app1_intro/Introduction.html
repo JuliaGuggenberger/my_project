@@ -15,7 +15,7 @@
         <span class="info-circle">i</span>
         <span class="tooltip-text">CO₂eq is a standard unit for measuring carbon footprints; it expresses the impact of all greenhouse 
             gases in terms of the amount of CO₂ that would produce the same warming effect.</span>
-    </span>. Emissions will be used onwards as a synonym for CO₂eq
+    </span>. 'Emissions' will henceforth be used as a shorthand for CO₂ equivalents.
     The results will provide valuable insights for implementing the Tradable Credit Scheme (TCS) in the real-world. <br>
     The idea behind the TCS is to give everyone a limited number of Token, which are required for commuting. Each Token represents 1 kg of 
     CO₂eq. If you need more Token, you can buy them; if you have extra, you can sell them. <br>
@@ -190,7 +190,7 @@
                         {% elif mode_info.mode == 'driving' %}
                             This commute is assumed to happen during peak hours, which makes it slower and requires more Token, as the emissions are higher.
                         {% elif mode_info.mode == 'driving_reschedule' %}
-                            By leaving {{ buffer }} min earlier to avoid peak hours, you save Token and reduce CO₂eq.
+                            By departuring {{ buffer }} min earlier to avoid peak hours, you save Token and reduce CO₂eq.
                         {% endif %}
                     </td>    
                 </tr>
@@ -296,6 +296,11 @@
     {{ form.default_mode.label }}
     {{ form.default_mode }}
     {{ formfield_errors 'default_mode' }}
+  </div><br>
+<div class="question-block">
+    {{ form.reschedule_quest.label }}
+    {{ form.reschedule_quest }}
+    {{ formfield_errors 'reschedule_quest' }}
   </div><br>
 
   <button type="submit" id="submit-choice">Start the test week</button>  

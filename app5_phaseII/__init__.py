@@ -39,6 +39,12 @@ class Player(BasePlayer):
     token_old = models.IntegerField()
     token_purchased = models.IntegerField(initial=0,min=0)
     token_sold = models.IntegerField(initial=0,min=0)
+    cost_change = models.StringField(
+        choices=[('1', 'The fuel price changes every day'), ('2', 'Real-life factors like weather or mood affect how convenient a mode feels '), ('3', 'The distance of the commute changes randomly'),],
+        label="Why can the cost of a travel mode change from one day to the next?",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
 
 #*******************************************************************************************************************
 # PAGES
@@ -64,6 +70,21 @@ class ConditionalChoiceOrNoCommuteWaitPage(WaitPage):
 
 # ======== Instruction ========
 class Instruction(Page):
+    form_model = 'player'
+    form_fields = ['cost_change']
+
+    @staticmethod
+    def error_message(player, values):
+        correct_answers = {'cost_change': '2'}
+    
+        errors = {}
+        for field, correct in correct_answers.items():
+            if values.get(field) != correct:
+                errors[field] = "Incorrect. Please review this part."
+        
+        return errors or None
+
+
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1 

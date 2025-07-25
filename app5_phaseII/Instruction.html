@@ -15,7 +15,7 @@
 <h1 class="title-highlight">Phase II - Variation in Costs</h1>
 
 <div style="text-align: justify;">
-    Compared to the previous phase, the costs of each mode can vary. This should represent the real-world. For example a bike ride can become more expensive (more inconvient) because it is raining. Or a car ride becomes cheaper (more enjoyable) because you listen to your favourite song.
+    Compared to the previous phase, the costs of each mode can <strong>vary</strong>. This should represent the real-world. For example, a bike ride can become more expensive (more inconvenient) because it is raining. Or a car ride becomes cheaper (more enjoyable) because you listen to your favourite song.
     <div style=" transform: scale(0.8); transform-origin: top center; margin-left:150px; margin-bottom: -50px;">
         <div style="width: 100%; margin-top: 0px;">
             <form method="post">
@@ -62,7 +62,7 @@
         </div>
     </div>   
 
-    <div style="font-size: 40px; color: var(--dark-teal);margin-left: 150px; margin-top: -10px; margin-bottom: 0px; text-align: center;">
+    <div style="font-size: 40px; color: var(--dark-teal);margin-left: 0px; margin-top: -10px; margin-bottom: 0px; text-align: center;">
         &#8659;
     </div>
 
@@ -114,10 +114,18 @@
 
 
 </div>
+</div><br>
+    <h4 class="title-highlight">Check your understanding</h4>
+    <form method="post" style="font-size: 14px;">
+    <div class="question-block">
+        {{ form.cost_change.label }}
+        {{ form.cost_change }}
+        {{ formfield_errors 'cost_change' }}
+    </div><br>
 
-    <form method="post">
-        <button type="submit" id="submit-choice">Start Phase II</button>  
+    <button type="submit" id="submit-choice">Start the test week</button>  
     </form>
+</div>
 </div>
 
 

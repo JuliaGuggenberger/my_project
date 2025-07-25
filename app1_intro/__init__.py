@@ -28,7 +28,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     entered_code = models.StringField(blank=True, label="Please enter your personal code.")
     travel_decision = models.StringField(
-        choices=[('1', 'One commute to work'), ('2', 'Commute to work and back'), ('3', 'All trips of one day'),],
+        choices=[('1', 'Commute to work'), ('2', 'Commute to work and back'), ('3', 'All trips of one day'),],
         label="What kind of travel decision do you have to make?",
         widget=widgets.RadioSelect,
         blank=False
@@ -54,6 +54,13 @@ class Player(BasePlayer):
     default_mode = models.StringField(
         choices=[('1', 'This is the mode from your Travel Diary and will be chosen if you run out of time'), ('2', 'Indicates the best mode'), ('3', 'Indicates the most environmental-friendly mode'),],
         label="What means default in the choice set? ",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
+    reschedule_quest = models.StringField(
+        choices=[('1', 'Driving reschedule uses electric vehicles'), ('2', 'Token are cheaper in the morning'), ('3', 'Rescheduling avoids congestion and has lower emissions'),],
+        label="Why do you need more Token for driving than for driving reschedule?",
         widget=widgets.RadioSelect,
         blank=False
     )
@@ -114,12 +121,12 @@ class CodeEntry(Page):
 # ======== Introduction ========
 class Introduction(Page):
     form_model = 'player'
-    form_fields = ['travel_decision', 'not_enough_token', 'token_valid', 'cost_structure', 'default_mode']
+    form_fields = ['travel_decision', 'not_enough_token', 'token_valid', 'cost_structure', 'default_mode', 'reschedule_quest']
 
     @staticmethod
     def error_message(player, values):
         correct_answers = {'travel_decision': '2', 'not_enough_token': '2', 'token_valid': '2',
-                           'cost_structure': '1', 'default_mode': '1'}
+                           'cost_structure': '1', 'default_mode': '1', 'reschedule_quest': '3'}
     
         errors = {}
         for field, correct in correct_answers.items():

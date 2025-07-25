@@ -45,7 +45,7 @@ class Player(BasePlayer):
     initial_token = models.IntegerField()
     initial_budget = models.FloatField()
     equal_token = models.StringField(
-        choices=[('1', 'Everyone gets the same amount of Token'), ('2', 'Everyone gets the same amount of budget'), ('3', 'Token allocaton only depends on the distance and not the mode used'),],
+        choices=[('1', 'Everyone gets the same amount of Token'), ('2', 'Everyone gets the same amount of budget'), ('3', 'Token allocation only depends on the distance and not the mode used'),],
         label="What does the distance-based allocation differ?",
         widget=widgets.RadioSelect,
         blank=False
