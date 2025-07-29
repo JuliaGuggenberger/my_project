@@ -289,7 +289,7 @@ def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_
 
     # === Token Price Update ===
     player.group.token_price += (net_token+pending_token) * PRICE_CHANGE_RATE
-    player.group.token_price = min(15.0, max(1.0, clean_zero(player.group.token_price)))
+    player.group.token_price = min(100.0, max(1.0, clean_zero(player.group.token_price)))
     player.participant.vars['token_price_history'].append(player.group.token_price)
 
     # === Setup Next Round's Budget and Token ===

@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
             'app7_postsurvey', 'app8_thankyou',
             'app_feedback'
             ],
-        num_demo_participants=2,
+        num_demo_participants=15,
         group_by_arrival_time=True,
     ),
 ]

@@ -11,7 +11,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'app1_intro'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
-    INITIAL_PRICE = 5.00
+    INITIAL_PRICE = 20.00
 
     APP_DIR = os.path.dirname(__file__)
     TRAVEL_DIARY_PATH = os.path.join(APP_DIR, 'choice_set.csv')   

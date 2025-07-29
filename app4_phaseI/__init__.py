@@ -12,9 +12,9 @@ class C(BaseConstants):
     NAME_IN_URL = 'app4_phaseI'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 10
-    INITIAL_PRICE = 5.00
-    PRICE_CHANGE_RATE = 0.01
-    TRANSACTION_COSTS = 0.5
+    INITIAL_PRICE = 20.00
+    PRICE_CHANGE_RATE = 0.05
+    TRANSACTION_COSTS = 4
     AUTO_FEE = 50
 
     DAY_ABBREVIATIONS = {'Monday': 'Mo','Tuesday': 'Tu','Wednesday': 'We','Thursday': 'Th',
@@ -51,6 +51,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         blank=False
     )
+    timeout_occurred = models.BooleanField(initial=False)
 
 #*******************************************************************************************************************
 # PAGES
@@ -160,6 +161,8 @@ class Choice(Page):
     form_model = 'player'
     form_fields = ['choice']
 
+    timeout_submission = {'choice': 'AUTO'}
+
     @staticmethod
     def is_displayed(player):
         trips = player.participant.vars['all_trips']
@@ -173,6 +176,8 @@ class Choice(Page):
     
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            player.timeout_occurred = True
         return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'I', reduced=True, AUTO_FEE=C.AUTO_FEE)
 
 
