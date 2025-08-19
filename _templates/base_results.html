@@ -29,16 +29,16 @@
 
 <hr style="margin: 50px 0;">
 
-<!-- ==================== Section 2: Payoff/Environmental impact ==================== -->
+<!-- ==================== Section 2: Balance/Environmental impact ==================== -->
 <div class="mb-20" style="display: flex; flex-wrap: wrap; gap: 20px">
     {% if current_phase not in ('testI', 'testII') %}
-        <!-- Payoff Overview Column -->
+        <!-- Balance Overview Column -->
         <div style="flex: 1; min-width: 300px">
-            <h4 class="title-highlight">Payoff overview</h4>
+            <h4 class="title-highlight">Balance overview</h4>
             {% if current_phase != 'I' %}
             <div class="mb-20 p-10 border-left-phase">
                 {% for phase in phase_results %}
-                    <strong>{{ phase.name }}:</strong> Payoff: <strong>{{ phase.budget }}</strong> DKK <br>
+                    <strong>{{ phase.name }}:</strong> Balance: <strong>{{ phase.budget }}</strong> DKK <br>
                 {% endfor %}
             </div>
             {% endif %}
@@ -50,26 +50,13 @@
                         <div class="mb-10">
                             <span style="color: var(--summary-label-color)">Monetary Budget: {{ week.budget }} DKK </span>
                         </div>
-                        <div class="mb-10">
-                            <span class="text-bold-dark">Payoff: </span>
-                            <span class="main-budget" style="font-size: 20px; font-weight: bold; color: var(--budget-orange)">
-                            {% if week.budget < 0 %}
-                                0
-                            {% else %}
-                                {{ week.budget }}
-                            {% endif %}
-                            </span>
-                            <span style="color: var(--summary-label-color)">DKK</span>
-                        </div>
                     </div>
                 {% endif %}
             {% endfor %}
             <div class="mb-10">
-                <span class="text-bold-dark">Total payoff: </span>
+                <span class="text-bold-dark">Total balance: </span>
                 <span style="font-size: 20px; font-weight: bold; color: var(--budget-orange)" id="main-budget"> {{ total_budget }} </span>
-                <span style="color: var(--summary-label-color)">DKK (excl. fixed payoff: </span>
-                <span style="font-size: 20px; font-weight: bold; color: var(--budget-orange)" id="main-budget"> 40 </span>
-                <span style="color: var(--summary-label-color)">DKK) </span>
+                <span style="color: var(--summary-label-color)">DKK </span>
             </div>
         </div>
 
@@ -115,17 +102,6 @@
                     <strong>Week {{ week.week }}</strong><br>
                     <div class="mb-10">
                         <span style="color: var(--summary-label-color)">Monetary Budget: {{ week.budget }} DKK </span>
-                    </div>
-                    <div class="mb-10">
-                        <span class="text-bold-dark">Payoff: </span>
-                            <span class="main-budget" style="font-size: 20px; font-weight: bold; color: var(--budget-orange)">
-                            {% if week.budget < 0 %}
-                                0
-                            {% else %}
-                                {{ week.budget }}
-                            {% endif %}
-                        </span>
-                        <span style="color: var(--summary-label-color)">DKK</span>
                     </div>
                 </div>
             {% endif %}

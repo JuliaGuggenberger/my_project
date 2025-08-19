@@ -16,17 +16,16 @@ SESSION_CONFIGS = [
             'app1_intro',
             'app2_testI', 'app3_testII',
             'app4_phaseI', 'app5_phaseII', 'app6_phaseIII', 
-            'app7_postsurvey', 'app8_thankyou',
-            'app_feedback'
+            'app7_postsurvey', 'app8_thankyou'
             ],
-        num_demo_participants=15,
+        num_demo_participants=3,
         group_by_arrival_time=True,
     ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00,
-    participation_fee=40.00, 
+    participation_fee=0.00, 
     doc=""
 )
 

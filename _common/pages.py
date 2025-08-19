@@ -42,6 +42,11 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
 
     # === Mode Information for Current Trip ===
     modes = choice_set(poss_modes, trip, vary = vary, current_phase=current_phase, week=week, day_in_week=day_in_week)
+    raw_reason = trip.get(f'variation_reason_{current_phase}_{week}_{day_in_week}') if vary else None
+    if pd.isna(raw_reason):
+        vary_reason = None
+    else:
+        vary_reason = raw_reason
 
     # === Map Resource Path ===
     map_src = f"/static/maps/map_{player.participant.vars['entered_code']}_{trip['day']}.png"
@@ -61,8 +66,8 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
             week=week,
             day_in_week=day_in_week,
             travel_day=trip['day'],
-            work_arrival=trip['morning_arrival_time'],
-            home_arrival=trip['evening_arrival_time'],
+            work_arrival=trip['arrival_time_work'],
+            work_departure=trip['departure_time_work'],
             preview_data=preview_data,
             preview_data_today=preview_data[trip_index],
             default_mode = trip['mode'],
@@ -76,7 +81,8 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
             total_base_token=total_base,
             total_token_used=total_token_used,
             car_distance=car_distance,
-            auto_fee = AUTO_FEE
+            auto_fee = AUTO_FEE,
+            vary_reason=vary_reason
         )
 
     return context
@@ -86,18 +92,21 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
 # before_next_page
 def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase='V', reduced=False, choice='commute', AUTO_FEE=10):
     # === Basic Setup ===
+    player.participant.vars['token_price_history'].append(player.group.token_price)
     trips = player.participant.vars['all_trips']
     trip_index = (player.round_number - 1) % len(trips)
     trip = trips[trip_index]
 
-   # if choice != 'no_commute':
+    if choice != 'no_commute':
     # === Determine Default Mode Choice ===
-    if timeout_happened:
-        # Use the mode that was preselected for the trip
-        mode = trip.get('mode')
-        player.choice = mode
+        if timeout_happened:
+            # Use the mode that was preselected for the trip
+            mode = trip.get('mode')
+            player.choice = mode
+        else:
+            mode = player.choice
     else:
-        mode = player.choice
+        mode = 'no_commute'
 
     # === Calculate Cost and Token Requirement ===
     if choice == 'no_commute':
@@ -182,12 +191,11 @@ def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase=
 # Market
 #***********************************************************************************************
 # vars_for_template
-def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_COSTS, current_phase = 'V', vary=False):
+def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_RATE, current_phase = 'V', vary=False):
     # === Basic Setup ===
     trips = player.participant.vars['all_trips']
     trip_choices = player.participant.vars.get('trip_choices', [])
     token_price_history = player.participant.vars.get('token_price_history', []).copy()
-    #token_price_history.append(player.group.token_price)
     trip_index = (player.round_number - 1) % len(trips)
     trip = trips[trip_index]
     buffer = trip['early_buffer']
@@ -197,14 +205,28 @@ def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_
     poss_modes = ast.literal_eval(poss_modes)
 
 
-    # === Day Labels for Graphs ===
+    # === Day Labels for Graphs with Phase Headers ===
     day_labels = []
-    day_labels = []
+    rounds_per_phase = 2 * len(trips)
+    PHASE_ORDER = ['I', 'II', 'III']
+    num_phases = (len(token_price_history) + rounds_per_phase - 1) // rounds_per_phase
+    current_phase_index = PHASE_ORDER.index(current_phase) if current_phase in PHASE_ORDER else -1
+
     for i in range(len(token_price_history)):
-        week = (i // len(trips)) + 1
-        day = trips[i % len(trips)].get('day', f'Day {i + 1}')
-        short_day = DAY_ABBREVIATIONS[day]
-        day_labels.append(f"{short_day} (W{week})")
+        phase_index = i // rounds_per_phase
+        if phase_index < current_phase_index:
+            # Previous phases: use phase label
+            if i % rounds_per_phase == 0:
+                day_labels.append(f"Phase {PHASE_ORDER[phase_index]}")
+            else:
+                day_labels.append("")
+        else:
+            # Current or future phase: use weekday and week number
+            week = (i // len(trips)) + 1
+            day = trips[i % len(trips)].get('day', f'Day {i + 1}')
+            short_day = DAY_ABBREVIATIONS.get(day, f'D{i}')
+            day_labels.append(f"{short_day}")
+
 
     # === Week & Day Tracking ===
     week = (player.round_number - 1) // len(trips) + 1
@@ -267,7 +289,8 @@ def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_
         current_phase=current_phase,
         page_name='market',
         num_trips=len(trips),
-        buffer=buffer
+        buffer=buffer,
+        price_change_rate=PRICE_CHANGE_RATE
     )
 
 #************************************
@@ -290,7 +313,6 @@ def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_
     # === Token Price Update ===
     player.group.token_price += (net_token+pending_token) * PRICE_CHANGE_RATE
     player.group.token_price = min(100.0, max(1.0, clean_zero(player.group.token_price)))
-    player.participant.vars['token_price_history'].append(player.group.token_price)
 
     # === Setup Next Round's Budget and Token ===
     if player.round_number < NUM_ROUNDS:
@@ -385,7 +407,7 @@ def results_vars_for_template(player, NUM_ROUNDS, TRANSACTION_COSTS, INITIAL_PRI
 
     # === Accumulate Totals ===
     if current_phase in ['I', 'II', 'III']:
-        total_budget = sum(w['budget'] for w in weekly_summary if w['budget'] > 0)
+        total_budget = sum(w['budget'] for w in weekly_summary)
     else: 
         total_budget = 0
     

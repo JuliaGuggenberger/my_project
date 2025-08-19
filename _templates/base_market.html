@@ -7,12 +7,12 @@
                 <span class="tooltip-icon" style=" transform: scale(1); transform-origin: top left;">
                     <span style="color: var(--dark-teal); text-decoration: underline; font-size: 20px; margin-left: 280px;">Trading rules</span>
                     <span class="tooltip-text" style="font-size: 16px; width: 500px; background-color: var(--light-teal); color: black">                           
-                        1. Each buy or sell transaction incurs a 0.5 DKK fee<br>
+                        1. Each buy or sell transaction incurs a {{ transaction_costs }} DKK fee<br>
                         2. You cannot buy Token if you don't have enough money<br>
                         3. You cannot sell more Token than you currently own<br>
                         4. You cannot buy more Token than you can use during the week<br>
                         5. You cannot buy more Token than you can use the next day<br>
-                        6. The Token price increases or decreases by 0.01 DKK for each Token bought or sold across all participants
+                        6. The Token price increases or decreases by {{ price_change_rate }} DKK for each Token bought or sold across all participants
                     </span>
                 </span>
             <div class="market-info" style="margin-top: -40px;">       

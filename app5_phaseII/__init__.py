@@ -111,7 +111,7 @@ class Instruction(Page):
         return dict(
             budget=clean_zero(player.participant.vars['initial_budget']),
             token=int(player.participant.vars['initial_token']),
-            token_price=clean_zero(player.participant.vars['token_price_history'][-1]),
+            token_price=clean_zero(player.group.token_price),
             default_mode=trip['mode'],
             preview_data=preview_data,
             total_base_token=total_base,
@@ -215,7 +215,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'II',vary=True)
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, current_phase = 'II',vary=True)
 
 
     @staticmethod

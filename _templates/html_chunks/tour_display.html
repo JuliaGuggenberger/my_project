@@ -5,16 +5,18 @@
 
 {% for stop in trip.morning_stops %}
     <span class="arrow">➜</span> {{ stop.0 }}
-    {% if stop.1 == "coffee" %}
-        &nbsp;<img src="/static/icons/coffee.png" alt="coffee" class="icon">
+    {% if stop.1 == "escorting" %}
+        &nbsp;<img src="/static/icons/escorting.png" alt="escorting" class="icon">
+    {% elif stop.1 == "shopping" %}
+        &nbsp;<img src="/static/icons/shopping.png" alt="shopping" class="icon">
     {% elif stop.1 == "sport" %}
         &nbsp;<img src="/static/icons/sport.png" alt="sport" class="icon">
-    {% elif stop.1 == "groceries" %}
-        &nbsp;<img src="/static/icons/groceries.png" alt="groceries" class="icon">
-    {% elif stop.1 == "child" %}
-        &nbsp;<img src="/static/icons/child.png" alt="child" class="icon">
-    {% else %}
-        &nbsp;<img src="/static/icons/shopping.png" alt="shopping" class="icon">
+    {% elif stop.1 == "errand_health" %}
+        &nbsp;<img src="/static/icons/errand_health.png" alt="errand_health" class="icon">
+    {% elif stop.1 == "family_friends" %}
+        &nbsp;<img src="/static/icons/family_friends.png" alt="family_friends" class="icon">
+    {% elif stop.1 == "other_leisure" %}
+        &nbsp;<img src="/static/icons/other_leisure.png" alt="other_leisure" class="icon">
     {% endif %}
 {% endfor %}
 <span class="arrow">➜</span> {{ trip.morning_destination }}&nbsp;<img src="/static/icons/work.png" alt="work" class="icon">
@@ -27,21 +29,23 @@
 
 {% for stop in trip.evening_stops %}  
     <span class="arrow">➜</span> {{ stop.0 }}
-    {% if stop.1 == "coffee" %}
-        &nbsp;<img src="/static/icons/coffee.png" alt="coffee" class="icon">
+    {% if stop.1 == "escorting" %}
+        &nbsp;<img src="/static/icons/escorting.png" alt="escorting" class="icon">
+    {% elif stop.1 == "shopping" %}
+        &nbsp;<img src="/static/icons/shopping.png" alt="shopping" class="icon">
     {% elif stop.1 == "sport" %}
         &nbsp;<img src="/static/icons/sport.png" alt="sport" class="icon">
-    {% elif stop.1 == "groceries" %}
-        &nbsp;<img src="/static/icons/groceries.png" alt="groceries" class="icon">
-    {% elif stop.1 == "child" %}
-        &nbsp;<img src="/static/icons/child.png" alt="child" class="icon">
-    {% else %}
-        &nbsp;<img src="/static/icons/shopping.png" alt="shopping" class="icon">
+    {% elif stop.1 == "errand_health" %}
+        &nbsp;<img src="/static/icons/errand_health.png" alt="errand_health" class="icon">
+    {% elif stop.1 == "family_friends" %}
+        &nbsp;<img src="/static/icons/family_friends.png" alt="family_friends" class="icon">
+    {% elif stop.1 == "other_leisure" %}
+        &nbsp;<img src="/static/icons/other_leisure.png" alt="other_leisure" class="icon">
     {% endif %}
 {% endfor %}
 <span class="arrow">➜</span> {{ trip.morning_origin }}&nbsp;<img src="/static/icons/home.png" alt="home" class="icon"> 
 
 {% if page_name == 'choice' %}
-    <br> &nbsp;&#8658;&nbsp; <strong>Arrival home:</strong> {{ home_arrival }} <br>
+    <br> &nbsp;&#8658;&nbsp; <strong>Departure work:</strong> {{ work_departure }} <br>
     <br> <img src="{% static 'icons/distance.png' %}" alt="distance" style="width: 16px"> <strong>Total Distance:</strong> {{ car_distance }} km
 {% endif %}

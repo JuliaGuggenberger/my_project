@@ -47,19 +47,62 @@
       {{ formfield_errors 'familiar_currency_other' }}
     </div>
   </div><br>
-  <div class="question-block">
-    {{ form.strategy_description.label }}
-    <div id="strategy_description">
-      {{ form.strategy_description }}
-    </div>
-    {{ formfield_errors 'strategy_description' }}
 
-    <div id="familiar_currency-other-container" style="display:none;">
-      {{ form.strategy_description_other.label }}
-      {{ form.strategy_description_other }}
-      {{ formfield_errors 'strategy_description_other' }}
-    </div>
+  <div class="question-block">
+    <label><strong>What was your strategy or approach during each phase?</strong></label>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th style="color: #C39E17">Phase I</th>
+          <th style="color: #731F69">Phase II</th>
+          <th style="color: #3B643A">Phase III</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maximize my budget</td>
+          <td>{{ form.strategy_description_phase1.0 }}</td>
+          <td>{{ form.strategy_description_phase2.0 }}</td>
+          <td>{{ form.strategy_description_phase3.0 }}</td>
+        </tr>
+        <tr>
+          <td>Be environmentally friendly</td>
+          <td>{{ form.strategy_description_phase1.1 }}</td>
+          <td>{{ form.strategy_description_phase2.1 }}</td>
+          <td>{{ form.strategy_description_phase3.1 }}</td>
+        </tr>
+        <tr>
+          <td>Try to replicate my real-world behavior</td>
+          <td>{{ form.strategy_description_phase1.2 }}</td>
+          <td>{{ form.strategy_description_phase2.2 }}</td>
+          <td>{{ form.strategy_description_phase3.2 }}</td>
+        </tr>
+        <tr>
+          <td>I decided randomly</td>
+          <td>{{ form.strategy_description_phase1.3 }}</td>
+          <td>{{ form.strategy_description_phase2.3 }}</td>
+          <td>{{ form.strategy_description_phase3.3 }}</td>
+        </tr>
+        <tr>
+          <td>Other</td>
+          <td>
+            {{ form.strategy_description_phase1.4 }}<br>
+            {{ form.strategy_description_phase1_other }}
+          </td>
+          <td>
+            {{ form.strategy_description_phase2.4 }}<br>
+            {{ form.strategy_description_phase2_other }}
+          </td>
+          <td>
+            {{ form.strategy_description_phase3.4 }}<br>
+            {{ form.strategy_description_phase3_other }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div><br>
+
   <div class="question-block">
     {{ form.minimization_focus.label }}
     {{ form.minimization_focus }}
@@ -97,7 +140,9 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     toggleOtherField("familiar_currency", "4", "familiar_currency-other-container");
-    toggleOtherField("strategy_description", "4", "strategy_description-other-container");
+    toggleOtherField("strategy_description_phase1", "5", "strategy_description_phase1_other");
+    toggleOtherField("strategy_description_phase2", "5", "strategy_description_phase2_other");
+    toggleOtherField("strategy_description_phase3", "5", "strategy_description_phase3_other");
   });
 </script>
 

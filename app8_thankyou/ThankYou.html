@@ -20,8 +20,34 @@
         </span>
     </p>
 
-    <p>You will be called individually for payment. Please remain seated and wait for your seat number to be called.</p>
+   <div class="mt-2">
+        <p><strong>Payment rule:</strong> Payoffs are restricted to {{ min_payoff }}–{{ cap_payoff }} DKK.
+           Among participants whose base payoff exceeds {{ cap_payoff }} DKK, exactly <em>one</em> is randomly
+           selected to receive their actual base payoff (capped at {{ max_winner_payoff }} DKK). Others receive {{ cap_payoff }} DKK.
+           All payoff amounts are rounded to the nearest number divisible by 5.
+           
+        </p>
+
+        <p><strong>Your base payoff (before rules):</strong> {{ base_payoff }} DKK</p>
+
+        {% if is_candidate %}
+            {% if is_winner %}
+                <p class="success">You were selected in the random draw, so you receive your base payoff (up to {{ max_winner_payoff }} DKK).</p>
+            {% else %}
+                <p class="warning">You were not selected in the random draw. Your payoff is capped at {{ cap_payoff }} DKK.</p>
+            {% endif %}
+        {% else %}
+            {% if base_payoff < min_payoff %}
+                <p class="info">Your payoff was increased to the minimum of {{ min_payoff }} DKK.</p>
+            {% elif base_payoff > cap_payoff %}
+                <p class="info">Your payoff was capped at {{ cap_payoff }} DKK.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <p class="mt-3">You will be called individually for payment. Please remain seated and wait for your seat number to be called.</p>
 </div>
+
 <br>
 <p>We greatly appreciate your time and contribution!</p>
 

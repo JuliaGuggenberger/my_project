@@ -102,6 +102,7 @@ class CodeEntry(Page):
         player.participant.vars['initial_budget'] = float(trips['total_monetary_budget_per_id'].iloc[0])
         player.participant.vars['initial_token'] = int(trips['total_token_budget_per_id'].iloc[0])
         player.participant.vars['initial_token_reduced'] = int(trips['total_token_budget_reduced_per_id'].iloc[0])
+        player.participant.vars['initial_token_distance'] = int(trips['total_token_budget_distance_per_id'].iloc[0])
         player.participant.vars['token_price_history'] = [C.INITIAL_PRICE]
         player.participant.vars['advance_to_phase_III'] = True
 

@@ -132,7 +132,6 @@ class WeekPreview(Page):
         player.group.token_price = C.INITIAL_PRICE
 
         #  Reset all market-related state
-        player.participant.vars['token_price_history'] = [C.INITIAL_PRICE]
         player.participant.vars['pending_token_purchases'] = 0
         player.participant.vars['pending_token_sales'] = 0
         player.token_purchased = 0
@@ -155,6 +154,10 @@ class WeekPreview(Page):
             page_name='weekpreview'
         )
     
+    def before_next_page(player, timeout_happened):
+        player.participant.vars['token_price_history'] = [C.INITIAL_PRICE]
+
+        
 class Choice(Page):
     timeout_seconds = timeout_sec('choice')
 
@@ -208,7 +211,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'I')
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, current_phase = 'I')
 
 
     @staticmethod

@@ -1,6 +1,52 @@
 
 <h3> {{ travel_day }} </h3>
 
+<br>
+
+{% if vary_reason and vary_reason != 'nan' %}
+<div class="vary-reason-highlight">
+    <div class="vary-reason-label">Additional Information</div>
+    <div class="vary-reason-content">
+        {% if vary_reason == 'rain' %}
+            <img src="{% static 'icons/rain.png' %}" alt="rain" class="vary-reason-icon">
+            <span>Heavy rain today</span>
+        {% elif vary_reason == 'sun' %}
+            <img src="{% static 'icons/sun.png' %}" alt="sun" class="vary-reason-icon">
+            <span>Sunny weather</span>
+        {% elif vary_reason == 'heat' %}
+            <img src="{% static 'icons/heat.png' %}" alt="heat" class="vary-reason-icon">
+            <span>High temperatures</span>
+        {% elif vary_reason == 'congestion' %}
+            <img src="{% static 'icons/congestion.png' %}" alt="congestion" class="vary-reason-icon">
+            <span>Heavy traffic</span>
+        {% elif vary_reason == 'construction' %}
+            <img src="{% static 'icons/construction.png' %}" alt="construction" class="vary-reason-icon">
+            <span>Road construction</span>
+        {% elif vary_reason == 'closure' %}
+            <img src="{% static 'icons/closure.png' %}" alt="closure" class="vary-reason-icon">
+            <span>Street closures</span>
+        {% elif vary_reason == 'fuel' %}
+            <img src="{% static 'icons/fuel.png' %}" alt="fuel" class="vary-reason-icon">
+            <span>Fuel price increase</span>
+        {% elif vary_reason == 'crowded' %}
+            <img src="{% static 'icons/crowded.png' %}" alt="crowded" class="vary-reason-icon">
+            <span>Public transport crowded</span>
+        {% elif vary_reason == 'overshoot' %}
+            <img src="{% static 'icons/overshoot.png' %}" alt="overshoot" class="vary-reason-icon">
+            <span>Earth Overshoot Day</span>
+        {% elif vary_reason == 'exercise' %}
+            <img src="{% static 'icons/exercise.png' %}" alt="exercise" class="vary-reason-icon">
+            <span>Extra exercise day</span>
+        {% elif vary_reason == 'cake' %}
+            <img src="{% static 'icons/cake.png' %}" alt="cake" class="vary-reason-icon">
+            <span>Carrying a cake</span>
+        {% endif %}
+    </div>
+</div>
+<br>
+{% endif %}
+
+
 <!-- ==================== Section: Tour & Map Display ==================== -->
 <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap">
 

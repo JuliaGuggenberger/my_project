@@ -99,30 +99,9 @@ class Instruction(Page):
         player.token_old = player.participant.vars['initial_token_reduced']
         players = [p for p in player.subsession.get_players() if p.participant.vars.get('advance_to_phase_III')]
 
-        # Extract distances
-        work_distances = [
-            p.participant.vars['all_trips'][0].get('tour_total_distance_km_all_days')
-            for p in players
-        ]
-        total_distance = sum(work_distances)
-
-        # Define total resources to allocate (same as default, but pooled)
-        total_tokens = sum(p.participant.vars['initial_token_reduced'] for p in players)
-
-        # Store totals in group for transparency
-        player.group.total_distance = total_distance
-        player.group.total_tokens = total_tokens
-
-        # Allocate proportionally and save per-player
-        for p, dist in zip(players, work_distances):
-            proportion = dist / total_distance
-            token_alloc = int(round(proportion * total_tokens))
-
-            p.participant.vars['initial_token_reduced'] = token_alloc
-
         # Initialize Week and Budget
         player.budget = player.participant.vars['initial_budget']
-        player.token = player.participant.vars['initial_token_reduced']
+        player.token = player.participant.vars['initial_token_distance']
         player.group.token_price = player.participant.vars.get('token_price_next_round', C.INITIAL_PRICE)
 
         # Return Template Variables
@@ -151,7 +130,7 @@ class WeekPreview(Page):
         current_week = (player.round_number - 1) // 5 + 1
         
         player.budget = player.participant.vars['initial_budget']
-        player.token = player.participant.vars['initial_token_reduced']
+        player.token = player.participant.vars['initial_token_distance']
         player.group.token_price = player.participant.vars.get('token_price_next_round', C.INITIAL_PRICE)
 
         # Load Trip Data for Preview 
@@ -172,7 +151,7 @@ class WeekPreview(Page):
         )
 
     def before_next_page(player, timeout_happened):
-        player.token = player.participant.vars['initial_token_reduced']
+        player.token = player.participant.vars['initial_token_distance']
         player.initial_token = player.token
         player.budget = player.participant.vars['initial_budget']
         player.initial_budget = player.budget
@@ -230,7 +209,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'III', vary=True)
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, current_phase = 'III', vary=True)
 
 
     @staticmethod

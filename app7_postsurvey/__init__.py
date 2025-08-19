@@ -74,16 +74,43 @@ class Player(BasePlayer):
     )
 
     # Strategy & Behavior
-    strategy_description = models.StringField(
-        choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'), ('3', 'Try to replicate my behavior from the real-world'), ('4', 'Other'),],
-        label="What was your overall strategy or approach during the experiment?",
+    # Strategy & Behavior - now per phase
+    strategy_description_phase1 = models.StringField(
+        choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+        label="Phase I strategy",
         widget=widgets.RadioSelect,
         blank=False
     )
-    strategy_description_other = models.StringField(
+    strategy_description_phase1_other = models.StringField(
         label="Please specify:",
         blank=True
     )
+
+    strategy_description_phase2 = models.StringField(
+        choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+        label="Phase II strategy",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+    strategy_description_phase2_other = models.StringField(
+        label="Please specify:",
+        blank=True
+    )
+
+    strategy_description_phase3 = models.StringField(
+        choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+        label="Phase III strategy",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+    strategy_description_phase3_other = models.StringField(
+        label="Please specify:",
+        blank=True
+    )
+
     minimization_focus = models.StringField(
         choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimize both'), ('4', 'I tried to minimze environmental impact'), ('5', 'I was not sure'),],
         label="Did you try to minimize your Token use or the costs?",
@@ -193,8 +220,10 @@ class Literacy(Page):
 # ======== Survey1 ========
 class Survey1(Page):
     form_model = 'player'
-    form_fields = ['understanding_level', 'clarity_of_rules', 'interface_ease', 'familiar_currency', 'familiar_currency_other', 'strategy_description', 'strategy_description_other', 'minimization_focus',
-                    'fair_price_token',]
+    form_fields = ['understanding_level', 'clarity_of_rules', 'interface_ease', 'familiar_currency', 'familiar_currency_other', 
+                    'strategy_description_phase1', 'strategy_description_phase1_other', 'strategy_description_phase2', 
+                    'strategy_description_phase2_other', 'strategy_description_phase3', 'strategy_description_phase3_other',
+                    'minimization_focus', 'fair_price_token',]
     
 # ======== Survey2 ========
 class Survey2(Page):

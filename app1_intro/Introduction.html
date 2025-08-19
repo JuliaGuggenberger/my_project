@@ -7,6 +7,22 @@
     <link href="{% static 'commonintro.css' %}" rel="stylesheet">
 </head>
 
+<h2 class="title-highlight">Welcome to the Experiment</h2>
+<p>
+In this experiment, you will make daily travel decisions for each day of a week.  
+These weeks are based on the information you provided in your travel diary, reflecting your real commute.  
+</p>
+
+<p>
+To get started, you’ll first complete two <em>test weeks</em> to become familiar with the process.  
+After that, you’ll move on to six <em>main weeks</em>, where your decisions will directly affect your results.  
+Your final payoff will depend on how well you manage your budget.
+</p>
+
+<p>
+Later in the experiment, you will also play <strong>simultaneously with other participants</strong>.  
+In those rounds, you may need to wait until everyone has made their choices.
+</p>
 
 <div style="font-family: Arial, sans-serif; max-width: 1000px; line-height: 1.6;">
   <h2 class="title-highlight">Tradable Credit Scheme Experiment</h2>
@@ -190,7 +206,7 @@
                         {% elif mode_info.mode == 'driving' %}
                             This commute is assumed to happen during peak hours, which makes it slower and requires more Token, as the emissions are higher.
                         {% elif mode_info.mode == 'driving_reschedule' %}
-                            By departuring {{ buffer }} min earlier to avoid peak hours, you save Token and reduce CO₂eq.
+                            By departuring {{ buffer }} min earlier to avoid peak hours, you save Token and reduce CO₂eq. ADD THAT IT MEANS LEAVING EARLIER
                         {% endif %}
                     </td>    
                 </tr>

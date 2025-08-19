@@ -145,7 +145,9 @@ class WeekPreview(Page):
             total_base_token=total_base,
             page_name='weekpreview'
         )
-
+    
+    def before_next_page(player, timeout_happened):
+        player.participant.vars['token_price_history'] = [C.INITIAL_PRICE]
 
 # ======== Choice ========
 class Choice(Page):
@@ -201,7 +203,7 @@ class Market(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, current_phase = 'testII')
+        return market_vars_for_template(player, C.DAY_ABBREVIATIONS, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, current_phase = 'testII')
 
     @staticmethod
     def before_next_page(player, timeout_happened):
