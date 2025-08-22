@@ -14,9 +14,9 @@ These weeks are based on the information you provided in your travel diary, refl
 </p>
 
 <p>
-To get started, you’ll first complete two <em>test weeks</em> to become familiar with the process.  
-After that, you’ll move on to six <em>main weeks</em>, where your decisions will directly affect your results.  
-Your final payoff will depend on how well you manage your budget.
+To get started, you'll first complete two <em>test weeks</em> to become familiar with the process.  
+After that, you'll move on to six <em>main weeks</em>, where your travel decisions will determine your payoff.  
+The calculation of your payoff will be explained later.
 </p>
 
 <p>
@@ -27,14 +27,14 @@ In those rounds, you may need to wait until everyone has made their choices.
 <div style="font-family: Arial, sans-serif; max-width: 1000px; line-height: 1.6;">
   <h2 class="title-highlight">Tradable Credit Scheme Experiment</h2>
   <p style="text-align: justify; font-size: 14px;">
-    In this experiment, you will help us to test a road pricing scheme designed to reduce CO₂ equivalents (CO₂eq)<span class="tooltip-icon" style=" transform: scale(0.8); transform-origin: top left;">
-        <span class="info-circle">i</span>
-        <span class="tooltip-text">CO₂eq is a standard unit for measuring carbon footprints; it expresses the impact of all greenhouse 
-            gases in terms of the amount of CO₂ that would produce the same warming effect.</span>
-    </span>. 'Emissions' will henceforth be used as a shorthand for CO₂ equivalents.
-    The results will provide valuable insights for implementing the Tradable Credit Scheme (TCS) in the real-world. <br>
-    The idea behind the TCS is to give everyone a limited number of Token, which are required for commuting. Each Token represents 1 kg of 
-    CO₂eq. If you need more Token, you can buy them; if you have extra, you can sell them. <br>
+    In this experiment, you will help us to test a scheme designed to reduce carbon dioxide (CO₂) emissions caused by using cars to travel to work. 
+    As part of this scheme, everyone will be given a certain number of Token for free. To use the <strong>car</strong> to travel to work and back home (commuting), 
+    you will need to spend a certain number of Token. The exact number of Token charged will depend on how much CO₂ you emit when using the car. Each Token represents 1 kg of 
+    CO₂ emissions. For example, if you travel during the peak period when there is more traffic congestion, you cause more emissions and hence, you will be charged more Token. <br>
+
+    If you do not have sufficient Token with you but would still like to use the car, you can buy extra Token in a market at a certain price. Similarly, if you have extra Token 
+    which you do not wish to use, you can sell them in the market and make money. <br>
+
     Click the arrows to see the idea summarized:
   </p>
 
@@ -129,10 +129,10 @@ In those rounds, you may need to wait until everyone has made their choices.
 </div>
 <br>
 <div style="text-align: justify;">
-  You will be faced in the experiment with commuting decisions of every weekday. The choices you have available reflect your commuting to work and back home 
-  in real life. Therefore, try to make decisions as you would in real life. One choice 
-  always consists of one <strong>whole commuting day</strong>. <br>
-  An example of a <strong>choice set</strong>:
+  In the experiment you will be faced with the decision of which travel mode (e.g. car, public transport, bicycle, walk) 
+  to use for your daily commute on each weekday. You will be provided with information about each mode. Note that this 
+  information is for the combined journey (round trip) from home to work and back to home. An example of the choice you 
+  will have to make and the information you will be provided is shown below.
 </div>  
 
 <div style=" transform: scale(0.8); transform-origin: top center; margin-left:150px; margin-bottom: -50px;">
@@ -202,11 +202,11 @@ In those rounds, you may need to wait until everyone has made their choices.
                     </td>
                     <td style="padding: 6px 12px;">
                         {% if mode_info.mode in ['walking', 'cycling', 'transit'] %}
-                            No Token required
+                            No Token required, you can save Token and reduce CO₂ emissions.
                         {% elif mode_info.mode == 'driving' %}
                             This commute is assumed to happen during peak hours, which makes it slower and requires more Token, as the emissions are higher.
                         {% elif mode_info.mode == 'driving_reschedule' %}
-                            By arriving at work {{ buffer }} minutes earlier, you can avoid peak-hour traffic, save tokens, and reduce CO₂eq emissions.
+                            By arriving at work {{ buffer }} minutes earlier, you can avoid peak-hour traffic, save Token, and reduce CO₂ emissions.
                         {% endif %}
                     </td>    
                 </tr>
@@ -230,9 +230,10 @@ In those rounds, you may need to wait until everyone has made their choices.
                     <span style="color: var(--budget-orange)"><i>Costs </i></span><img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">
                 </td>
                 <td>
-                    These costs reflect both mode-specific expenses (e.g., fuel, tickets) and the value of your time when using each mode. If you are less flexible or do 
-                    not typically use public transport, it may be more expensive for you. For biking, the costs also include the physical effort required and the potential 
-                    discomfort or inconvenience, which are factored in as part of the overall cost.
+                    These costs reflect both mode-specific expenses (e.g., fuel, tickets) and the value of the time lost using each mode. 
+                    For example, even though walking and biking are free, you will see a cost associated with them which reflects the cost 
+                    of 'time' spent walking/biking, the physical effort required, and potential discomfort/ inconvenience, which are 
+                    factored in as part of the overall cost.
                 </td>
             </tr>
             <tr>
@@ -240,7 +241,7 @@ In those rounds, you may need to wait until everyone has made their choices.
                     <span style="color: var(--token-green)"><i>Token </i></span><img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">
                 </td>
                 <td>
-                    Token needed for the specific mode of transport.
+                    Number of tokens needed to use the mode.
                 </td>
             </tr>
             <tr>
@@ -263,8 +264,11 @@ In those rounds, you may need to wait until everyone has made their choices.
     </div>
     </div>
 <div style="text-align: justify;">
-    To be able to make the choice you will get a monetary budget and a Token budget, which will decrease after every decision. You will also be informed of the Token price, 
-    which will remain constant at the beginning. The budget will be valid for one week and then it will be renewed.
+    At the beginning of each week, you will be provided with a monetary budget and a Token budget. After you make a travel decision for 
+    the daily commute on each day, your monetary budget will be reduced by an amount equal to cost of the mode you selected. Similarly, 
+    the Token budget will be reduced by the amount of Token that you used for the selected mode (if any). Every time you buy Token in the 
+    market money will be used up from this monetary budget and every time you sell Token your money will be added to this monetary budget.
+    Your Token and monetary budget are valid for one week and will be reset at the beginning of the next week.
 </div>
 <div style=" transform: scale(0.8); transform-origin: top left; margin-bottom: -50px; margin-top: -20px; width: 50%;">
     <div class="summary-card">
