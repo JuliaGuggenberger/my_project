@@ -93,6 +93,41 @@ table tr:not(.token-header):not(.table-total):hover {background-color: var(--lig
 .summary-value { text-align: left; font-weight: bold; font-size: 20px; white-space: nowrap; }
 .summary-unit { font-size: 16px; font-weight: normal; color: var(--summary-label-color); margin-left: 4px; }
 
+/* ==================== VARYING STYLES ==================== */
+.vary-reason-highlight {
+    display: flex;
+    border: 1px solid var(--dark-teal);
+    border-radius: 6px;
+    overflow: hidden; /* makes both sides perfectly joined */
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.vary-reason-label {
+    background-color: var(--dark-teal);
+    color: var(--white);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.vary-reason-content {
+    background-color: var(--light-teal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: var(--summary-label-color);
+    flex: 1;
+}
+
+.vary-reason-icon {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0;
+}
+
 
 /* ==================== COUNTDOWN ==================== */
 .otree-timer { display: none; background-color: var(--warning-1) !important; color: var(--warning-3) !important; 
