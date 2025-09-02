@@ -45,6 +45,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     final_payoff = models.CurrencyField()
+    exact_payoff = models.CurrencyField()
 
 #*******************************************************************************************************************
 # PAGES
@@ -53,33 +54,34 @@ class Player(BasePlayer):
 class ThankYou(Page):
     @staticmethod
     def vars_for_template(player):
-        session = player.session
         participant = player.participant
+        session = player.session
+        fee = session.config.get('participation_fee', 0)
 
-        base_payoff = float(participant.payoff_plus_participation_fee())
-        is_candidate = base_payoff > C.CAP_PAYOFF
-        winner_code = session.vars.get('highpay_winner_code', None)
-        is_winner = is_candidate and (participant.code == winner_code)
+        # Prefer the values computed earlier; fall back gracefully if missing
+        final_total = participant.vars.get('final_total')
+        base_total = participant.vars.get('base_total')
 
-        if not is_candidate:
-            # Clamp to [MIN_PAYOFF, CAP_PAYOFF]
-            final_payoff = max(C.MIN_PAYOFF, min(base_payoff, C.CAP_PAYOFF))
-        else:
-            # Candidate with base > 400
-            if is_winner:
-                final_payoff = min(base_payoff, C.MAX_WINNER_PAYOFF)
-            else:
-                final_payoff = C.CAP_PAYOFF
+        if final_total is None:
+            # Fallback: reconstruct from official payoff + fee (still correct if earlier step ran)
+            final_total = float(participant.payoff) + fee
 
-        # Round all payoffs to nearest 5
-        final_payoff = round(final_payoff / 5) * 5
+        if base_total is None:
+            base_total = float(participant.payoff_plus_participation_fee())
 
-        # Persist on the player for record
-        player.final_payoff = final_payoff
+        is_candidate = participant.vars.get('is_candidate', base_total > C.CAP_PAYOFF)
+        is_winner = participant.vars.get(
+            'is_winner',
+            is_candidate and (participant.code == session.vars.get('highpay_winner_code'))
+        )
+
+        # Store for record (optional, does NOT change official payoff)
+        player.final_payoff = final_total
+        player.exact_payoff = base_total
 
         return dict(
-            base_payoff=round(base_payoff, 2),
-            final_payoff=round(final_payoff, 2),
+            base_payoff=base_total,
+            final_payoff=final_total,
             is_candidate=is_candidate,
             is_winner=is_winner,
             min_payoff=C.MIN_PAYOFF,

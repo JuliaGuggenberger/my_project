@@ -11,8 +11,8 @@ doc = """
 class C(BaseConstants):
     NAME_IN_URL = 'app6_phaseIII'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
-    INITIAL_PRICE = 20.00
+    NUM_ROUNDS = 15
+    INITIAL_PRICE = 10.00
     PRICE_CHANGE_RATE = 0.05
     TRANSACTION_COSTS = 4
     AUTO_FEE = 50
@@ -31,9 +31,6 @@ class Subsession(BaseSubsession):
             
 class Group(BaseGroup):
     token_price = models.FloatField()
-    total_distance = models.FloatField(initial=0)
-    total_budget = models.FloatField(initial=0)
-    total_tokens = models.IntegerField(initial=0)
 
 class Player(BasePlayer):
     choice = models.StringField()
@@ -45,12 +42,13 @@ class Player(BasePlayer):
     initial_token = models.IntegerField()
     initial_budget = models.FloatField()
     equal_token = models.StringField(
-        choices=[('1', 'Everyone gets the same amount of Token'), ('2', 'Everyone gets the same amount of budget'), ('3', 'Token allocation only depends on the distance and not the mode used'),],
+        choices=[('1', 'Everyone gets the same amount of tokens'), ('2', 'Everyone gets the same amount of budget'), ('3', 'Token allocation only depends on the distance and not the mode used'),],
         label="What does the distance-based allocation differ?",
         widget=widgets.RadioSelect,
         blank=False
     )
-    timeout_occurred = models.BooleanField(initial=False)
+    timeout_occurred_choice = models.BooleanField(initial=False)
+    timeout_occurred_market = models.BooleanField(initial=False)
 
 #*******************************************************************************************************************
 # PAGES
@@ -178,8 +176,8 @@ class Choice(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened:
-            player.timeout_occurred = True
-        return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'III', reduced=True, AUTO_FEE=C.AUTO_FEE)
+            player.timeout_occurred_choice = True
+        return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'III', distance=True, AUTO_FEE=C.AUTO_FEE)
 
 
 class NoCommute(Page):
@@ -198,7 +196,7 @@ class NoCommute(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'III', reduced=True, choice='no_commute')
+        return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'III', distance=True, choice='no_commute')
 
 
 class Market(Page):
@@ -214,7 +212,9 @@ class Market(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        return market_before_next_page(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, reduced = False)
+        if timeout_happened:
+            player.timeout_occurred_market = True
+        return market_before_next_page(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, distance = False)
 
 
 class Results(Page):
@@ -226,6 +226,6 @@ class Results(Page):
 
     @staticmethod
     def vars_for_template(player):
-        return results_vars_for_template(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.INITIAL_PRICE, reduced=True, current_phase='III')
+        return results_vars_for_template(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.INITIAL_PRICE, distance=True, current_phase='III')
 
 page_sequence = [SyncWaitPage, Instruction, SyncWaitPage, WeekPreview, SyncWaitPage, Market, SyncWaitPage, NoCommute, Choice, SyncWaitPage, Results]

@@ -11,8 +11,8 @@ doc = """
 class C(BaseConstants):
     NAME_IN_URL = 'app5_phaseII'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
-    INITIAL_PRICE = 20.00
+    NUM_ROUNDS = 15
+    INITIAL_PRICE = 10.00
     PRICE_CHANGE_RATE = 0.05
     TRANSACTION_COSTS = 4
     AUTO_FEE = 50
@@ -40,12 +40,13 @@ class Player(BasePlayer):
     token_purchased = models.IntegerField(initial=0,min=0)
     token_sold = models.IntegerField(initial=0,min=0)
     cost_change = models.StringField(
-        choices=[('1', 'The fuel price changes every day'), ('2', 'Real-life factors like weather or mood affect how convenient a mode feels '), ('3', 'The distance of the commute changes randomly'),],
-        label="Why can the cost of a travel mode change from one day to the next?",
+        choices=[('1', 'Because the distances of the trip are changed'), ('2', 'Because conditions such as weather, congestion, or events affect travel effort and time'), ('3', 'There is no reason for the cost changes'),],
+        label="Why can the cost of a travel mode for the same trip change from one day to the next?",
         widget=widgets.RadioSelect,
         blank=False
     )
-    timeout_occurred = models.BooleanField(initial=False)
+    timeout_occurred_choice = models.BooleanField(initial=False)
+    timeout_occurred_market = models.BooleanField(initial=False)
 
 #*******************************************************************************************************************
 # PAGES
@@ -184,7 +185,7 @@ class Choice(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened:
-            player.timeout_occurred = True
+            player.timeout_occurred_choice = True
         return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'II', reduced=True, AUTO_FEE=C.AUTO_FEE)
 
 
@@ -220,6 +221,8 @@ class Market(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            player.timeout_occurred_market = True
         return market_before_next_page(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, reduced = False)
 
 

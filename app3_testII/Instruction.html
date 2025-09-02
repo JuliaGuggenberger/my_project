@@ -11,10 +11,10 @@
 </head>
 
 <!-- ======================== Week Preview HTML ======================== -->
-<h1 class="title-highlight">Introduction to the Market</h1>
+<h1 class="title-highlight">Introduction to the market</h1>
 
 <div style="text-align: justify;">
-    From now on you can decide before each trip, to either <strong>buy</strong> or <strong>sell</strong> Token, or to <strong>keep</strong> your current Token balance. The trade is completed as soon as you click the <strong>Buy</strong> or <strong>Sell</strong> button. <br>
+    From now on you can decide before each trip, to either <strong>buy</strong> or <strong>sell</strong> tokens, or to <strong>keep</strong> your current token balance. The trade is completed as soon as you click the <strong>Buy</strong> or <strong>Sell</strong> button. <br>
     This is a display of the Market:
 </div>
 <!-- ==================== Market Form ==================== -->
@@ -57,7 +57,7 @@
         </form>
 
         <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
-            Every time someone buys or sells a Token, it changes the price for the next day.
+            Every time someone buys or sells a tokens, it changes the price for the next day.
         </p>
     </div>
 </div>
@@ -75,7 +75,7 @@
                     <img src="{% static 'pics/transaction_costs.png' %}" alt="leaf" style="width: 300px">
                 </td>
                 <td style="padding: 20px; text-align: justify; font-size: 14px;">
-                    <strong>1. Transaction fees</strong> <br>
+                    <strong>1. Transaction fee</strong> <br>
                     Each buy or sell transaction incurs a {{ transaction_costs }} DKK fee.
                 </td>
             </tr>
@@ -89,7 +89,7 @@
                 </td>
                 <td style="padding: 20px; text-align: justify; font-size: 14px;">
                     <strong>2. No money</strong> <br>
-                    You cannot buy Token if you don't have enough money.
+                    You cannot buy tokens if you don't have enough money.
                 </td>
             </tr>
         </table>    
@@ -101,8 +101,8 @@
                     <img src="{% static 'pics/not_enough_token.png' %}" alt="leaf" style="width: 300px">
                 </td>
                 <td style="padding: 20px; text-align: justify; font-size: 14px;">
-                    <strong>3. Not enough Token</strong> <br>
-                    You cannot sell more Token than you currently own.
+                    <strong>3. Not enough tokens</strong> <br>
+                    You cannot sell more tokens than you currently own.
                 </td>
             </tr>
         </table>    
@@ -114,9 +114,9 @@
                     <img src="{% static 'pics/max_token.png' %}" alt="leaf" style="width: 300px">
                 </td>
                 <td style="padding: 20px; text-align: justify; font-size: 14px;">
-                    <strong>4. Maximum Token you can buy</strong> <br>
-                    You can only buy Token that you will be able to use before the week ends.
-                    If you already have more Token than you can use, or if buying more would push you over the limit, you will not be allowed to buy.
+                    <strong>4. Maximum tokens you can buy</strong> <br>
+                    You can only buy the amount of tokens that you will be able to use before the week ends.
+                    If you already have more tokens than you can use, or if buying more would push you over the limit, you will not be allowed to buy.
                 </td>
             </tr>
         </table>    
@@ -125,25 +125,12 @@
         <table style="width: 90%; border-collapse: collapse; margin: auto;">
             <tr>
                 <td style="padding: 20px; text-align: center;">
-                    <img src="{% static 'pics/max_token_once.png' %}" alt="leaf" style="width: 300px">
-                </td>
-                <td style="padding: 20px; text-align: justify; font-size: 14px;">
-                    <strong>5. Maximum Token you can buy at ONCE</strong> <br>
-                    You can only buy as many Token at once as you can use maximal the following day.
-                </td>
-            </tr>
-        </table>
-    </div>
-        <div class="slide" style="display: none;">
-        <table style="width: 90%; border-collapse: collapse; margin: auto;">
-            <tr>
-                <td style="padding: 20px; text-align: center;">
                     <img src="{% static 'pics/token_price.png' %}" alt="leaf" style="width: 300px">
                 </td>
                 <td style="padding: 20px; text-align: justify; font-size: 14px;">
-                    <strong>6. Token price change</strong> <br>
-                    The price of a Token changes by 0.01 DKK for each Token bought or sold by any participant.
-                    A new Token price is calculated and shown after each market page is completed.
+                    <strong>5. Token price change</strong> <br>
+                    The price of a token changes by {{ price_change_rate }} DKK for each token bought or sold by any participant.
+                    A new token price is calculated and shown after each market page is completed.
                 </td>
             </tr>
         </table>

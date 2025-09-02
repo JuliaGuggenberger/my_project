@@ -1,4 +1,5 @@
 from otree.api import *
+import pandas as pd
 
 doc = """
     Post Survey
@@ -10,6 +11,9 @@ class C(BaseConstants):
     NAME_IN_URL = 'app_postsurvey'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
+    MIN_PAYOFF = 200
+    CAP_PAYOFF = 400
+    MAX_WINNER_PAYOFF = 700
 
 #*************************************************************************************************
 # MODELS
@@ -77,7 +81,7 @@ class Player(BasePlayer):
     # Strategy & Behavior - now per phase
     strategy_description_phase1 = models.StringField(
         choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
-                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided according to the travel time'), ('5', 'I decided randomly'), ('6', 'Other')],
         label="Phase I strategy",
         widget=widgets.RadioSelect,
         blank=False
@@ -89,7 +93,7 @@ class Player(BasePlayer):
 
     strategy_description_phase2 = models.StringField(
         choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
-                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided according to the travel time'), ('5', 'I decided randomly'), ('6', 'Other')],
         label="Phase II strategy",
         widget=widgets.RadioSelect,
         blank=False
@@ -101,7 +105,7 @@ class Player(BasePlayer):
 
     strategy_description_phase3 = models.StringField(
         choices=[('1', 'Maximize my budget'), ('2', 'Be environmentally friendly'),
-                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided randomly'), ('5', 'Other')],
+                ('3', 'Try to replicate my behavior from the real-world'), ('4', 'I decided according to the travel time'), ('5', 'I decided randomly'), ('6', 'Other')],
         label="Phase III strategy",
         widget=widgets.RadioSelect,
         blank=False
@@ -111,15 +115,43 @@ class Player(BasePlayer):
         blank=True
     )
 
-    minimization_focus = models.StringField(
-        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimize both'), ('4', 'I tried to minimze environmental impact'), ('5', 'I was not sure'),],
-        label="Did you try to minimize your Token use or the costs?",
+    minimization_focus_1 = models.StringField(
+        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimze travel time'), ('4', 'I tried to minimize car use'),],
+        label="always",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
+    minimization_focus_2 = models.StringField(
+        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimze travel time'), ('4', 'I tried to minimize car use'),],
+        label="often",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
+    minimization_focus_3 = models.StringField(
+        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimze travel time'), ('4', 'I tried to minimize car use'),],
+        label="sometimes",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
+    minimization_focus_4 = models.StringField(
+        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimze travel time'), ('4', 'I tried to minimize car use'),],
+        label="rarely",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
+    minimization_focus_5 = models.StringField(
+        choices=[('1', 'I tried to minimize token use'), ('2', 'I tried to minimize costs'), ('3', 'I tried to minimze travel time'), ('4', 'I tried to minimize car use'),],
+        label="never",
         widget=widgets.RadioSelect,
         blank=False
     )
 
     fair_price_token = models.FloatField(
-        label="What do you consider a fair price for 1 Token (1 kg of CO₂ equivalent)?",
+        label="What do you consider a fair price for 1 token (1 kg of CO₂ emissions) [in DKK]?",
         blank=False
     )
 
@@ -127,19 +159,19 @@ class Player(BasePlayer):
     # Opinion scale (Likert)
     fun_rating = models.StringField(
         choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
-        label="Trading Tokens seems fun.",
+        label="Trading tokens seems fun.",
         widget=widgets.RadioSelectHorizontal,
         blank=False
     )
     difficulty_rating = models.StringField(
         choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
-        label="Trading Tokens seems difficult.",
+        label="Trading tokens seems difficult.",
         widget=widgets.RadioSelectHorizontal,
         blank=False
     )
     intuitive_rating = models.StringField(
         choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')],
-        label="Using Tokens feels intuitive to me.",
+        label="Needing tokens for driving feels intuitive to me.",
         widget=widgets.RadioSelectHorizontal,
         blank=False
     )
@@ -170,6 +202,12 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         blank=False
     )
+    trading_real_life = models.StringField(
+        choices=[('1', 'Several times a day'), ('2', 'Once a day'), ('3', 'Several times a week'),  ('4', 'Once a week'),  ('5', 'Several times a month'), ('6', 'Once a month'), ('7', 'Never'),],
+        label="If you had to use the system in real life, how frequently would you feel comfortable trading?",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
     effectiveness_opinion = models.StringField(
         choices=[('1', 'Yes'), ('2', 'No'), ('3', 'Not sure'),],
         label="Do you think such a scheme could effectively reduce CO₂ emissions?",
@@ -188,7 +226,7 @@ class Player(BasePlayer):
     )
     user_response_if_implemented = models.StringField(
         choices=[('1', 'Reduce my CO₂ emissions'), ('2', 'Switch to electric or low-emission transportation'),
-                    ('3', 'Offset CO₂ emissions by purchasing extra Token'), ('4', 'Change how I plan travel or shopping'), ('5', 'Participate actively in the trading market'),
+                    ('3', 'Offset CO₂ emissions by purchasing extra tokens'), ('4', 'Change how I plan travel or shopping'), ('5', 'Participate actively in the trading market'),
                     ('6', 'Do nothing / Continue as before'), ('7', 'Other'),],
         label="What would you do if such a scheme were implemented in your city?",
         widget=widgets.RadioSelect,
@@ -209,6 +247,18 @@ class Player(BasePlayer):
         blank=True
     )
 
+    payoff_expectation = models.FloatField(
+        label="Before completing the experiment, how much did you expect to earn [in DKK]?",
+        blank=False
+    )
+
+    inform_experiment = models.StringField(
+        choices=[('1', 'Yes'), ('2', 'No')],
+        label="Would you like to be informed about the results of this experiment?",
+        widget=widgets.RadioSelect,
+        blank=False
+    )
+
 #*******************************************************************************************************************
 # PAGES
 
@@ -223,7 +273,7 @@ class Survey1(Page):
     form_fields = ['understanding_level', 'clarity_of_rules', 'interface_ease', 'familiar_currency', 'familiar_currency_other', 
                     'strategy_description_phase1', 'strategy_description_phase1_other', 'strategy_description_phase2', 
                     'strategy_description_phase2_other', 'strategy_description_phase3', 'strategy_description_phase3_other',
-                    'minimization_focus', 'fair_price_token',]
+                    'minimization_focus_1', 'minimization_focus_2', 'minimization_focus_3', 'minimization_focus_4', 'minimization_focus_5', 'fair_price_token',]
     
 # ======== Survey2 ========
 class Survey2(Page):
@@ -233,7 +283,55 @@ class Survey2(Page):
 # ======== Survey3 ========
 class Survey3(Page):
     form_model = 'player'
-    form_fields = ['support_local_scheme', 'effectiveness_opinion', 'who_benefits', 'user_response_if_implemented', 'confusing_part',
-                    'who_benefits_other', 'user_response_if_implemented_other', 'confusing_part_other',]
+    form_fields = ['support_local_scheme', 'trading_real_life', 'effectiveness_opinion', 'who_benefits', 'user_response_if_implemented', 'confusing_part',
+                    'who_benefits_other', 'user_response_if_implemented_other', 'confusing_part_other','payoff_expectation', 'inform_experiment']
+    
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        session = player.session
+        participant = player.participant
+        fee = session.config.get('participation_fee', 0)
+
+        # ---------- 1) Draw winner ONCE across the whole session (anyone > 400) ----------
+        if 'highpay_winner_code' not in session.vars:
+            rows = []
+            for part in session.get_participants():  # all participants in session
+                base_total = float(part.payoff_plus_participation_fee())
+                if base_total > C.CAP_PAYOFF:
+                    rows.append({'code': part.code, 'base_payoff': base_total})
+
+            if rows:
+                df = pd.DataFrame(rows)
+                winner_row = df.sample(n=1, random_state=None).iloc[0]
+                session.vars['highpay_winner_code'] = winner_row['code']
+            else:
+                session.vars['highpay_winner_code'] = None
+
+        winner_code = session.vars.get('highpay_winner_code')
+
+        # ---------- 2) Compute this participant's final total (incl. fee) ----------
+        base_total = float(participant.payoff_plus_participation_fee())  # includes fee
+        is_candidate = base_total > C.CAP_PAYOFF
+        is_winner = is_candidate and (participant.code == winner_code)
+
+        if not is_candidate:
+            final_total = max(C.MIN_PAYOFF, min(base_total, C.CAP_PAYOFF))
+        else:
+            final_total = min(base_total, C.MAX_WINNER_PAYOFF) if is_winner else C.CAP_PAYOFF
+
+        # Round to nearest 5
+        final_total = -(-final_total // 5) * 5
+
+        # ---------- 3) Persist for the thank-you app & set official oTree payoff ----------
+        # Store display values for the thank-you page (keep totals incl. fee here)
+        participant.vars['base_total'] = round(base_total, 2)
+        participant.vars['final_total'] = round(final_total, 2)
+        participant.vars['is_candidate'] = is_candidate
+        participant.vars['is_winner'] = is_winner
+
+        # oTree's official payoff excludes the fee:
+        final_excl_fee = final_total - fee
+        player.payoff = final_excl_fee
+        participant.payoff = final_excl_fee
 
 page_sequence = [Literacy, Survey1, Survey2, Survey3]

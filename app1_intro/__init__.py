@@ -11,7 +11,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'app1_intro'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
-    INITIAL_PRICE = 20.00
+    INITIAL_PRICE = 10.00
 
     APP_DIR = os.path.dirname(__file__)
     TRAVEL_DIARY_PATH = os.path.join(APP_DIR, 'choice_set.csv')   
@@ -24,7 +24,6 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     pass 
-
 class Player(BasePlayer):
     entered_code = models.StringField(blank=True, label="Please enter your personal code.")
     travel_decision = models.StringField(
@@ -33,15 +32,15 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         blank=False
     )
-    not_enough_token = models.StringField(
-        choices=[('1', 'You cannot commute by car'), ('2', 'Token are automatically bought including a fee'), ('3', 'You need to go back to the market and buy additional Token'),],
-        label="What happens if you do not have enough Token?",
+    token_budget_reduced = models.StringField(
+        choices=[('1', 'By the cost of the selected mode'), ('2', 'By a random amount between 1 and 5'), ('3', 'By the number of tokens required for the selected mode'),],
+        label="By which amount does the token budget reduce?",
         widget=widgets.RadioSelect,
         blank=False
     )
     token_valid = models.StringField(
         choices=[('1', 'For 1 day'), ('2', 'For 1 week'), ('3', 'They do not lose validity'),],
-        label="How long are your Token valid?",
+        label="How long are your tokens valid?",
         widget=widgets.RadioSelect,
         blank=False
     )
@@ -59,8 +58,8 @@ class Player(BasePlayer):
     )
 
     reschedule_quest = models.StringField(
-        choices=[('1', 'Driving reschedule uses electric vehicles'), ('2', 'Token are cheaper in the morning'), ('3', 'Rescheduling avoids congestion and has lower emissions'),],
-        label="Why do you need more Token for driving than for driving reschedule?",
+        choices=[('1', 'Driving reschedule uses electric vehicles'), ('2', 'Tokens are cheaper in the morning'), ('3', 'Rescheduling avoids congestion and has lower emissions'),],
+        label="Why do you need more tokens for driving than for driving reschedule?",
         widget=widgets.RadioSelect,
         blank=False
     )
@@ -122,11 +121,11 @@ class CodeEntry(Page):
 # ======== Introduction ========
 class Introduction(Page):
     form_model = 'player'
-    form_fields = ['travel_decision', 'not_enough_token', 'token_valid', 'cost_structure', 'default_mode', 'reschedule_quest']
+    form_fields = ['travel_decision', 'token_budget_reduced', 'token_valid', 'cost_structure', 'default_mode', 'reschedule_quest']
 
     @staticmethod
     def error_message(player, values):
-        correct_answers = {'travel_decision': '2', 'not_enough_token': '2', 'token_valid': '2',
+        correct_answers = {'travel_decision': '2', 'token_budget_reduced': '3', 'token_valid': '2',
                            'cost_structure': '1', 'default_mode': '1', 'reschedule_quest': '3'}
     
         errors = {}

@@ -25,6 +25,11 @@
     {{ formfield_errors 'support_local_scheme' }}
   </div><br>
   <div class="question-block">
+    {{ form.trading_real_life.label }}
+    {{ form.trading_real_life }}
+    {{ formfield_errors 'trading_real_life' }}
+  </div><br>
+  <div class="question-block">
     {{ form.effectiveness_opinion.label }}
     {{ form.effectiveness_opinion }}
     {{ formfield_errors 'effectiveness_opinion' }}
@@ -67,6 +72,16 @@
       {{ form.confusing_part_other }}
       {{ formfield_errors 'confusing_part_other' }}
     </div>
+  </div><br>
+    <div class="question-block">
+    {{ form.payoff_expectation.label }}
+    {{ form.payoff_expectation }}
+    {{ formfield_errors 'payoff_expectation' }}
+  </div><br>
+    <div class="question-block">
+    {{ form.inform_experiment.label }}
+    {{ form.inform_experiment }}
+    {{ formfield_errors 'inform_experiment' }}
   </div><br>
 
   <button type="submit" class="button">Submit Survey</button>

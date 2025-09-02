@@ -13,7 +13,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'app3_testII'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 5
-    INITIAL_PRICE = 20.00
+    INITIAL_PRICE = 10.00
     PRICE_CHANGE_RATE = 0.05
     TRANSACTION_COSTS = 4
     AUTO_FEE = 50
@@ -40,18 +40,19 @@ class Player(BasePlayer):
     token_purchased = models.IntegerField(initial=0,min=0)
     token_sold = models.IntegerField(initial=0,min=0)
     price_change = models.StringField(
-        choices=[('1', 'The Token price does not change'), ('2', 'Amount of Token you trade'), ('3', 'Amount of Token everyone trades'),],
-        label="What causes the Token price to change?",
+        choices=[('1', 'The token price does not change'), ('2', 'Amount of tokens you trade'), ('3', 'Amount of tokens everyone trades'),],
+        label="What causes the token price to change?",
         widget=widgets.RadioSelect,
         blank=False
     )
     token_buy = models.StringField(
-        choices=[('1', 'Yes, if you have enough money'), ('2', 'No, you can buy/sell maximum 5 Token'), ('3', 'No, it depends on the use'),],
-        label="Can you buy as many Token as you want?",
+        choices=[('1', 'Yes, if you have enough money'), ('2', 'No, you can buy/sell maximum 5 tokens'), ('3', 'No, it depends on the use'),],
+        label="Can you buy as many tokens as you want?",
         widget=widgets.RadioSelect,
         blank=False
     )
-    timeout_occurred = models.BooleanField(initial=False)
+    timeout_occurred_choice = models.BooleanField(initial=False)
+    timeout_occurred_market = models.BooleanField(initial=False)
 
 #*******************************************************************************************************************
 # PAGES
@@ -108,7 +109,8 @@ class Instruction(Page):
             token=int(player.token),
             token_price=clean_zero(player.group.token_price),
             page_name='intro',
-            transaction_costs=C.TRANSACTION_COSTS
+            transaction_costs=C.TRANSACTION_COSTS,
+            price_change_rate=C.PRICE_CHANGE_RATE
         )
 
 # ======== WeekPreview ========
@@ -170,7 +172,7 @@ class Choice(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened:
-            player.timeout_occurred = True
+            player.timeout_occurred_choice = True
         return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'testII', AUTO_FEE=C.AUTO_FEE)
 
 
@@ -207,6 +209,8 @@ class Market(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            player.timeout_occurred_market = True
         return market_before_next_page(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE)
 
 

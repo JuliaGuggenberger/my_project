@@ -7,32 +7,28 @@
     <link href="{% static 'commonintro.css' %}" rel="stylesheet">
 </head>
 
-<h2 class="title-highlight">Welcome to the Experiment</h2>
-<p>
+<h2 class="title-highlight">Welcome to the experiment</h2>
+<p style="text-align: justify; font-size: 14px;">
 In this experiment, you will make daily travel decisions for each day of a week.  
-These weeks are based on the information you provided in your travel diary, reflecting your real commute.  
-</p>
+These weeks are based on the information you provided in your travel diary, reflecting your real commute.  <br>
 
-<p>
 To get started, you'll first complete two <em>test weeks</em> to become familiar with the process.  
-After that, you'll move on to six <em>main weeks</em>, where your travel decisions will determine your payoff.  
-The calculation of your payoff will be explained later.
-</p>
+After that, you'll move on to nine <em>main weeks</em>, where your travel decisions will determine your payoff (the amount of money you will be paid at the end of the experiment).  
+The calculation of your payoff will be explained later. <br>
 
-<p>
 Later in the experiment, you will also play <strong>simultaneously with other participants</strong>.  
 In those rounds, you may need to wait until everyone has made their choices.
 </p>
 
 <div style="font-family: Arial, sans-serif; max-width: 1000px; line-height: 1.6;">
-  <h2 class="title-highlight">Tradable Credit Scheme Experiment</h2>
+  <h2 class="title-highlight">Tradable Credit Scheme experiment</h2>
   <p style="text-align: justify; font-size: 14px;">
     In this experiment, you will help us to test a scheme designed to reduce carbon dioxide (CO₂) emissions caused by using cars to travel to work. 
-    As part of this scheme, everyone will be given a certain number of Token for free. To use the <strong>car</strong> to travel to work and back home (commuting), 
-    you will need to spend a certain number of Token. The exact number of Token charged will depend on how much CO₂ you emit when using the car. Each Token represents 1 kg of 
-    CO₂ emissions. For example, if you travel during the peak period when there is more traffic congestion, you cause more emissions and hence, you will be charged more Token. <br>
+    As part of this scheme, everyone will be given a certain number of tokens for free. To use the <strong>car</strong> to travel to work and back home (commuting), 
+    you will need to spend a certain number of tokens. The exact number of tokens charged will depend on how much CO₂ you emit when using the car. Each token represents 1 kg of 
+    CO₂ emissions. For example, if you travel during the peak period when there is more traffic congestion, you cause more emissions and hence, you will be charged more tokens. <br>
 
-    If you do not have sufficient Token with you but would still like to use the car, you can buy extra Token in a market at a certain price. Similarly, if you have extra Token 
+    If you do not have sufficient tokens with you but would still like to use the car, you can buy extra tokens in a market at a certain price. Similarly, if you have extra tokens 
     which you do not wish to use, you can sell them in the market and make money. <br>
 
     Click the arrows to see the idea summarized:
@@ -49,8 +45,8 @@ In those rounds, you may need to wait until everyone has made their choices.
                 <td style="padding: 20px; text-align: justify;">
                     <strong>1. Problem</strong> <br>
                     Road traffic and congestion are major global challenges, causing significant costs at individual,
-                    environmental, economic, and social levels (Eurostat 2018). By 2030, transport emissions may account for 40% of
-                    Denmark’s total emissions (Kamp Damgård 2019).
+                    environmental, economic, and social levels (Eurostat, 2018). By 2030, transport emissions may account for 40% of
+                    Denmark's total emissions (Kamp Damgård, 2019).
                 </td>
             </tr>
         </table>    
@@ -63,7 +59,7 @@ In those rounds, you may need to wait until everyone has made their choices.
                 </td>
                 <td style="padding: 20px; text-align: justify;">
                     <strong>2. Solution</strong> <br>
-                    That's where the Tradable Credit Scheme (TCS) comes in. One Token has the value of 1 kg of CO₂eq.
+                    That's where the Tradable Credit Scheme (TCS) comes in. One token has the value of 1 kg of CO₂ emissions.
                 </td>
             </tr>
         </table>    
@@ -76,7 +72,7 @@ In those rounds, you may need to wait until everyone has made their choices.
                 </td>
                 <td style="padding: 20px; text-align: justify;">
                     <strong>3. Functionality TCS: Allocation</strong> <br>
-                    Everyone gets an initial amount of Token, which can be used for commuting. The allocation depends on the emissions of you commuting behavior from the Travel Diary you reported.
+                    Everyone gets an initial amount of tokens, which can be used for commuting. The allocation depends on the emissions of you commuting behavior from the Travel Diary you reported.
                 </td>
             </tr>
         </table>    
@@ -89,7 +85,7 @@ In those rounds, you may need to wait until everyone has made their choices.
                 </td>
                 <td style="padding: 20px; text-align: justify;">
                     <strong>4. Functionality TCS: Market</strong> <br>
-                    Need more Token for your commute? You can buy them on the market. <br> Have leftover Token? You can sell them and earn money. The price changes with every transaction.
+                    Need more tokens for your commute? You can buy them on the market. <br> Have leftover tokens? You can sell them and earn money. The price changes with every transaction.
                 </td>
             </tr>
         </table>    
@@ -102,7 +98,7 @@ In those rounds, you may need to wait until everyone has made their choices.
                 </td>
                 <td style="padding: 20px; text-align: justify;">
                     <strong>5. Functionality TCS: Structure</strong> <br>
-                    The regulator (e.g.: government) oversees the system, distributes the Token and monitors the market. The travelers can interact with the market and make commuting decisions.
+                    The regulator (e.g.: government) oversees the system, distributes the tokens and monitors the market. The travelers can interact with the market and make commuting decisions.
                 </td>
             </tr>
         </table>
@@ -159,9 +155,8 @@ In those rounds, you may need to wait until everyone has made their choices.
                                 <br> <span style="color: var(--dark-teal)">(default)</span>
                             {% endif %}
                     </td>
-                    <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
                         <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
-                        <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                        <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> {% if mode_info.token == 1 %}Token{% else %}Tokens{% endif %} </td>
                     <td> 
                         <div class="mt--2">
                             {% for is_filled in mode_info.rating %}
@@ -172,6 +167,9 @@ In those rounds, you may need to wait until everyone has made their choices.
                                 {% endif %}
                             {% endfor %}
                         </div>
+                    </td>
+                    <!-- Time & Distance Info -->
+                    <td style="color: grey;"> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 12px">: {{ mode_info.time }} <br> <p style= "font-size:12px;">*already included in costs</p>
                     </td>
                 </tr>
                 {% endfor %}
@@ -202,11 +200,11 @@ In those rounds, you may need to wait until everyone has made their choices.
                     </td>
                     <td style="padding: 6px 12px;">
                         {% if mode_info.mode in ['walking', 'cycling', 'transit'] %}
-                            No Token required, you can save Token and reduce CO₂ emissions.
+                            No tokens required, you can save tokens and reduce CO₂ emissions.
                         {% elif mode_info.mode == 'driving' %}
-                            This commute is assumed to happen during peak hours, which makes it slower and requires more Token, as the emissions are higher.
+                            This commute is assumed to happen during peak hours, which makes it slower and requires more tokens, as the emissions are higher.
                         {% elif mode_info.mode == 'driving_reschedule' %}
-                            By arriving at work {{ buffer }} minutes earlier, you can avoid peak-hour traffic, save Token, and reduce CO₂ emissions.
+                            By arriving at work {{ buffer }} minutes earlier, you can avoid peak-hour traffic, save tokens, and reduce CO₂ emissions. (The number of minutes may vary depending on the day and trip.)
                         {% endif %}
                     </td>    
                 </tr>
@@ -217,14 +215,6 @@ In those rounds, you may need to wait until everyone has made their choices.
     <strong>Other attributes:</strong>
     <div class="mb-20 p-10 border-left-phase">
         <table style="width: auto; border-collapse: collapse; font-size: 0.95em; margin: 0; padding: 0;">
-            <tr>
-                <td style="min-width: 200px;"">
-                    <i>Time </i><img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">
-                </td>
-                <td>
-                    Total commute time for the day.
-                </td> 
-            </tr>
             <tr>
                 <td> 
                     <span style="color: var(--budget-orange)"><i>Costs </i></span><img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">
@@ -259,16 +249,23 @@ In those rounds, you may need to wait until everyone has made their choices.
                 <td>
                     The mode marked as "default" is the one you stated in your travel diary and will be automatically selected if you do not make an active choice.
                 </td>
+            </tr>            
+            <tr>
+                <td style="min-width: 200px;"">
+                    <i style="color: grey">Time </i><img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">
+                </td>
+                <td>
+                    Total commute time for the day. The time is already included in the cost calculation.
+                </td> 
             </tr>
         </table>
     </div>
     </div>
 <div style="text-align: justify;">
-    At the beginning of each week, you will be provided with a monetary budget and a Token budget. After you make a travel decision for 
+    At the beginning of each week, you will be provided with a monetary budget and a token budget. After you make a travel decision for 
     the daily commute on each day, your monetary budget will be reduced by an amount equal to cost of the mode you selected. Similarly, 
-    the Token budget will be reduced by the amount of Token that you used for the selected mode (if any). Every time you buy Token in the 
-    market money will be used up from this monetary budget and every time you sell Token your money will be added to this monetary budget.
-    Your Token and monetary budget are valid for one week and will be reset at the beginning of the next week.
+    the token budget will be reduced by the amount of tokens that you used for the selected mode (if any).
+    Your token and monetary budget are valid for one week and will be reset at the beginning of the next week.
 </div>
 <div style=" transform: scale(0.8); transform-origin: top left; margin-bottom: -50px; margin-top: -20px; width: 50%;">
     <div class="summary-card">
@@ -278,14 +275,14 @@ In those rounds, you may need to wait until everyone has made their choices.
             <div class="summary-label">Monetary Budget:</div>
             <div class="summary-value"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
             <div class="summary-label">Token Budget:</div>
-            <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+            <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">{% if token == 1 %}Token{% else %}Tokens{% endif %}</span></div>
         </div>
     </div>
 </div>
 <br>
 <ul>
-    <li style="margin-bottom: 6px;"><strong>Not enough Token to commute?</strong> The required Token will be automatically purchased at the current price plus a 50 DKK fee</li>
-    <li style="margin-bottom: 6px;"><strong>Leftover Token?</strong> Any unused Token will be sold at the current price minus transaction costs</li>
+    <li style="margin-bottom: 6px;"><strong>Not enough tokens to commute?</strong> Later in the experiment, you will be introduced to the token market. You can trade in the market before making your daily travel decision, but the market will be closed during the decision itself. If you choose a travel mode that needs more tokens than you currently own, the missing tokens will be automatically bought for you at the current market price plus a 50 DKK fee.</li>
+    <li style="margin-bottom: 6px;"><strong>Leftover tokens?</strong> Every unused token will be sold at the current price minus transaction costs</li>
     <li style="margin-bottom: 6px;">The monetary budget <strong>can get negative.</strong></li>
 </ul>
 <br>
@@ -298,9 +295,9 @@ In those rounds, you may need to wait until everyone has made their choices.
     {{ formfield_errors 'travel_decision' }}
   </div><br>
    <div class="question-block">
-    {{ form.not_enough_token.label }}
-    {{ form.not_enough_token }}
-    {{ formfield_errors 'not_enough_token' }}
+    {{ form.token_budget_reduced.label }}
+    {{ form.token_budget_reduced }}
+    {{ formfield_errors 'token_budget_reduced' }}
   </div><br>
    <div class="question-block">
     {{ form.token_valid.label }}

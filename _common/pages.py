@@ -90,7 +90,7 @@ def choice_vars_for_template(player, NUM_ROUNDS, current_phase = 'V', choice='co
 
 #************************************
 # before_next_page
-def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase='V', reduced=False, choice='commute', AUTO_FEE=10):
+def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase='V', reduced=False, choice='commute', distance=False, AUTO_FEE=10):
     # === Basic Setup ===
     player.participant.vars['token_price_history'].append(player.group.token_price)
     trips = player.participant.vars['all_trips']
@@ -153,9 +153,12 @@ def choice_before_next_page(player, NUM_ROUNDS, timeout_happened, current_phase=
             if reduced == True: 
                 next_p.budget = player.participant.vars['initial_budget']
                 next_p.token = int(player.participant.vars['initial_token_reduced'])
+            elif distance:
+                next_p.budget = player.participant.vars['initial_budget']
+                next_p.token = int(player.participant.vars['initial_token_distance'])
             else:
                 next_p.budget = player.participant.vars['initial_budget']
-                next_p.token = player.participant.vars['initial_token']
+                next_p.token = int(player.participant.vars['initial_token'])
         else:
             next_p.budget = player.budget
             next_p.token = player.token
@@ -295,7 +298,7 @@ def market_vars_for_template(player, DAY_ABBREVIATIONS, NUM_ROUNDS, TRANSACTION_
 
 #************************************
 # before_next_page
-def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_RATE, reduced=False):
+def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_RATE, reduced=False, distance=False):
     # === Token Transactions ===
     pending_sales = player.participant.vars.get('pending_token_sales', 0)
     pending_purchases = player.participant.vars.get('pending_token_purchases', 0)
@@ -323,6 +326,9 @@ def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_
             if reduced == True: 
                 next_p.budget = player.participant.vars['initial_budget']
                 next_p.token = int(player.participant.vars['initial_token_reduced'])
+            elif distance:
+                next_p.budget = player.participant.vars['initial_budget']
+                next_p.token = int(player.participant.vars['initial_token_distance'])
             else:
                 next_p.budget = player.participant.vars['initial_budget']
                 next_p.token = int(player.participant.vars['initial_token'])
@@ -342,7 +348,7 @@ def market_before_next_page(player, NUM_ROUNDS, TRANSACTION_COSTS, PRICE_CHANGE_
 # Results
 #***********************************************************************************************
 # vars_for_template
-def results_vars_for_template(player, NUM_ROUNDS, TRANSACTION_COSTS, INITIAL_PRICE, reduced=False, current_phase = 'V'):
+def results_vars_for_template(player, NUM_ROUNDS, TRANSACTION_COSTS, INITIAL_PRICE, reduced=False, current_phase = 'V', distance=False):
     # === Setup Week and Round Info ===
     trips = player.participant.vars['all_trips']
     trip_choices = player.participant.vars['trip_choices']
@@ -491,7 +497,11 @@ def results_vars_for_template(player, NUM_ROUNDS, TRANSACTION_COSTS, INITIAL_PRI
         token_sold=remaining_token,
         budget=clean_zero(player.budget),
         token=player.token,
-        token_init=player.participant.vars['initial_token'] if not reduced else player.participant.vars['initial_token_reduced'],
+        token_init = (
+            player.participant.vars['initial_token_reduced'] if reduced
+            else player.participant.vars['initial_token_distance'] if distance
+            else player.participant.vars['initial_token']
+        ),        
         transaction_costs = transaction_costs,
         phase_results=phase_results
     )

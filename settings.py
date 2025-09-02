@@ -18,7 +18,7 @@ SESSION_CONFIGS = [
             'app4_phaseI', 'app5_phaseII', 'app6_phaseIII', 
             'app7_postsurvey', 'app8_thankyou'
             ],
-        num_demo_participants=3,
+        num_demo_participants=2,
         group_by_arrival_time=True,
     ),
 ]
@@ -69,7 +69,7 @@ REAL_WORLD_CURRENCY_DECIMAL_PLACES = 2
 USE_POINTS = False
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+# ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
 

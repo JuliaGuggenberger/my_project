@@ -11,8 +11,8 @@ doc = """
 class C(BaseConstants):
     NAME_IN_URL = 'app4_phaseI'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
-    INITIAL_PRICE = 20.00
+    NUM_ROUNDS = 15
+    INITIAL_PRICE = 10.00
     PRICE_CHANGE_RATE = 0.05
     TRANSACTION_COSTS = 4
     AUTO_FEE = 50
@@ -46,12 +46,13 @@ class Player(BasePlayer):
         blank=False
     )
     token_price = models.StringField(
-        choices=[('1', 'No, only to the next week'), ('2', 'Yes, it will be taken over'), ('3', 'No, the Token price resets for the next Phase'),],
-        label="Will the Token price be taken over to the next Phase?",
+        choices=[('1', 'No, only to the next week'), ('2', 'Yes, it will be taken over'), ('3', 'No, the token price resets for the next phase'),],
+        label="Will the token price be taken over to the next phase?",
         widget=widgets.RadioSelect,
         blank=False
     )
-    timeout_occurred = models.BooleanField(initial=False)
+    timeout_occurred_choice = models.BooleanField(initial=False)
+    timeout_occurred_market = models.BooleanField(initial=False)
 
 #*******************************************************************************************************************
 # PAGES
@@ -180,7 +181,7 @@ class Choice(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         if timeout_happened:
-            player.timeout_occurred = True
+            player.timeout_occurred_choice = True
         return choice_before_next_page(player, C.NUM_ROUNDS, timeout_happened, current_phase = 'I', reduced=True, AUTO_FEE=C.AUTO_FEE)
 
 
@@ -216,6 +217,8 @@ class Market(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
+        if timeout_happened:
+            player.timeout_occurred_market = True
         return market_before_next_page(player, C.NUM_ROUNDS, C.TRANSACTION_COSTS, C.PRICE_CHANGE_RATE, reduced = False)
 
 

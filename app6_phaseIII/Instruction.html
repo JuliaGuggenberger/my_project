@@ -11,12 +11,13 @@
 </head>
 
 <!-- ======================== Week Preview HTML ======================== -->
-<h1 class="title-highlight">Phase III - Distance-based Token allocation</h1>
+<h1 class="title-highlight">Phase III - Distance-based token allocation</h1>
 
 <div style="text-align: justify;">
-    Compared to the previous phase, Token are distributed <strong>based solely on commuting distance</strong> rather than the actual CO₂eq emitted in the Travel Diary. 
-    This means the Token allocation only depends on the distance, regardless of which mode you chose in the travel diary.
-    As a result, the Token amount can also stay the same if you're already receiving the amount that corresponds to your commuting distance.
+    The government has introduced a new policy to make token distribution fairer and more transparent.
+    Compared to the previous phase, tokens are distributed <strong>based solely on commuting distance</strong> rather than the actual CO₂ emitted in the Travel Diary. 
+    This means the token allocation only depends on the distance, regardless of which mode you chose in the travel diary.
+    As a result, the token amount can also stay the same if you're already receiving the amount that corresponds to your commuting distance.
     <div style="transform: scale(0.7); transform-origin: top left; height: 100px; margin-top: -20px; width: 50%;">
         <div class="summary-card">
             <div class="summary-grid">
@@ -25,7 +26,7 @@
                 <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
                 <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
                 <div class="summary-label">Token Budget:</div>
-                <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">{% if token == 1 %}Token{% else %}Tokens{% endif %}</span></div>
             </div>
         </div>
     </div>
@@ -42,7 +43,7 @@
                 <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
                 <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
                 <div class="summary-label">Token Budget:</div>
-                <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">Token</span></div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">{% if token_reduced == 1 %}Token{% else %}Tokens{% endif %}</span></div>
             </div>
         </div>
     </div>

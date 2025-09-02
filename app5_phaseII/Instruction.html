@@ -12,7 +12,7 @@
 </head>
 
 <!-- ======================== Week Preview HTML ======================== -->
-<h1 class="title-highlight">Phase II - Variation in Costs</h1>
+<h1 class="title-highlight">Phase II - Variation in costs</h1>
 
 <div style="text-align: justify;">
     Compared to the previous phase, the <strong>costs of each travel mode may change</strong>.  
@@ -47,7 +47,7 @@ while rising fuel prices or road closures might make driving more expensive.
                         </td>
                         <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
                             <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
-                            <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                            <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> {% if mode_info.token == 1 %}Token{% else %}Tokens{% endif %} </td>
                         <td> 
                             <div class="mt--2">
                                 {% for is_filled in mode_info.rating %}
@@ -97,7 +97,7 @@ while rising fuel prices or road closures might make driving more expensive.
                         </td>
                         <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
                             <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> ??? </span> DKK <br> 
-                            <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                            <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> {% if mode_info.token == 1 %}Token{% else %}Tokens{% endif %} </td>
                         <td> 
                             <div class="mt--2">
                                 {% for is_filled in mode_info.rating %}

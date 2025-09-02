@@ -11,12 +11,12 @@
 </head>
 
 <!-- ======================== Week Preview HTML ======================== -->
-<h1 class="title-highlight">Phase I - Reduced Token allocation</h1>
+<h1 class="title-highlight">Phase I - Reduced token allocation</h1>
 
 <div style="text-align: justify;">
     The experiment and therefore the payoff period will start. <br>
-    Compared to the previous phase, your <strong>starting Token budget is reduced</strong>. This will require more strategic use of your resources.
-    Everything else remains the same as in the test phase. The change of the Token price will be taken over to the next week and phase.
+    Compared to the previous phase, your <strong>starting token budget is reduced</strong>. This will require more strategic use of your resources.
+    Everything else remains the same as in the test phase. The change of the token price will be taken over to the next week and phase.
     <div style="transform: scale(0.7); transform-origin: top left; height: 100px; margin-top: -20px; width: 50%;">
         <div class="summary-card">
             <div class="summary-grid">
@@ -25,7 +25,7 @@
                 <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
                 <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
                 <div class="summary-label">Token Budget:</div>
-                <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">Token</span></div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token }}</span> <span class="summary-unit">{% if token == 1 %}Token{% else %}Tokens{% endif %}</span></div>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                 <div class="summary-label" style="opacity: 0.6">Monetary Budget:</div>
                 <div class="summary-value" style="opacity: 0.6"><span style="color: var(--budget-orange)">{{ budget }}</span><span class="summary-unit">DKK</span></div>
                 <div class="summary-label">Token Budget:</div>
-                <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">Token</span></div>
+                <div class="summary-value"><span style="color: var(--token-green)">{{ token_reduced }}</span> <span class="summary-unit">{% if token_reduced == 1 %}Token{% else %}Tokens{% endif %}</span></div>
             </div>
         </div>
     </div>

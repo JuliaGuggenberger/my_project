@@ -49,7 +49,7 @@
   </div><br>
 
   <div class="question-block">
-    <label><strong>What was your strategy or approach during each phase?</strong></label>
+    <label><strong>What did you try to minimize?</strong></label>
     <table class="matrix-table">
       <thead>
         <tr>
@@ -79,23 +79,29 @@
           <td>{{ form.strategy_description_phase3.2 }}</td>
         </tr>
         <tr>
-          <td>I decided randomly</td>
+          <td>I decided according to the travel time</td>
           <td>{{ form.strategy_description_phase1.3 }}</td>
           <td>{{ form.strategy_description_phase2.3 }}</td>
           <td>{{ form.strategy_description_phase3.3 }}</td>
         </tr>
         <tr>
+          <td>I decided randomly</td>
+          <td>{{ form.strategy_description_phase1.4 }}</td>
+          <td>{{ form.strategy_description_phase2.4 }}</td>
+          <td>{{ form.strategy_description_phase3.4 }}</td>
+        </tr>
+        <tr>
           <td>Other</td>
           <td>
-            {{ form.strategy_description_phase1.4 }}<br>
+            {{ form.strategy_description_phase1.5 }}<br>
             {{ form.strategy_description_phase1_other }}
           </td>
           <td>
-            {{ form.strategy_description_phase2.4 }}<br>
+            {{ form.strategy_description_phase2.5 }}<br>
             {{ form.strategy_description_phase2_other }}
           </td>
           <td>
-            {{ form.strategy_description_phase3.4 }}<br>
+            {{ form.strategy_description_phase3.5 }}<br>
             {{ form.strategy_description_phase3_other }}
           </td>
         </tr>
@@ -104,10 +110,55 @@
   </div><br>
 
   <div class="question-block">
-    {{ form.minimization_focus.label }}
-    {{ form.minimization_focus }}
-    {{ formfield_errors 'minimization_focus' }}
+    <label><strong>What was your main strategy or approach during each phase?</strong></label>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th> always </th>
+          <th> often </th>
+          <th> sometimes </th>
+          <th> rarely </th>
+          <th> never </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>I tried to minimize token use</td>
+          <td>{{ form.minimization_focus_1.0 }}</td>
+          <td>{{ form.minimization_focus_2.0 }}</td>
+          <td>{{ form.minimization_focus_3.0 }}</td>
+          <td>{{ form.minimization_focus_4.0 }}</td>
+          <td>{{ form.minimization_focus_5.0 }}</td>
+        </tr>
+        <tr>
+          <td>I tried to minimize costs</td>
+          <td>{{ form.minimization_focus_1.1 }}</td>
+          <td>{{ form.minimization_focus_2.1 }}</td>
+          <td>{{ form.minimization_focus_3.1 }}</td>
+          <td>{{ form.minimization_focus_4.1 }}</td>
+          <td>{{ form.minimization_focus_5.1 }}</td>
+        </tr>
+        <tr>
+          <td>I tried to minimze travel time</td>
+          <td>{{ form.minimization_focus_1.2 }}</td>
+          <td>{{ form.minimization_focus_2.2 }}</td>
+          <td>{{ form.minimization_focus_3.2 }}</td>
+          <td>{{ form.minimization_focus_4.2 }}</td>
+          <td>{{ form.minimization_focus_5.2 }}</td>
+        </tr>
+        <tr>
+          <td>I tried to minimize car use</td>
+          <td>{{ form.minimization_focus_1.3 }}</td>
+          <td>{{ form.minimization_focus_2.3 }}</td>
+          <td>{{ form.minimization_focus_3.3 }}</td>
+          <td>{{ form.minimization_focus_4.3 }}</td>
+          <td>{{ form.minimization_focus_5.3 }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div><br>
+
   <div class="question-block">
     {{ form.fair_price_token.label }}
     {{ form.fair_price_token }}
@@ -140,9 +191,9 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     toggleOtherField("familiar_currency", "4", "familiar_currency-other-container");
-    toggleOtherField("strategy_description_phase1", "5", "strategy_description_phase1_other");
-    toggleOtherField("strategy_description_phase2", "5", "strategy_description_phase2_other");
-    toggleOtherField("strategy_description_phase3", "5", "strategy_description_phase3_other");
+    toggleOtherField("strategy_description_phase1", "6", "strategy_description_phase1_other");
+    toggleOtherField("strategy_description_phase2", "6", "strategy_description_phase2_other");
+    toggleOtherField("strategy_description_phase3", "6", "strategy_description_phase3_other");
   });
 </script>
 

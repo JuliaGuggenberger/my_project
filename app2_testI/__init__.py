@@ -12,7 +12,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'app2_testI'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 5
-    INITIAL_PRICE = 20.00
+    INITIAL_PRICE = 10.00
     TRANSACTION_COSTS = 4
     AUTO_FEE = 50
 
