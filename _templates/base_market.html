@@ -8,11 +8,11 @@
                     <span style="color: var(--dark-teal); text-decoration: underline; font-size: 20px; margin-left: 280px;">Trading rules</span>
                     <span class="tooltip-text" style="font-size: 16px; width: 500px; background-color: var(--light-teal); color: black">                           
                         1. Each buy or sell transaction incurs a {{ transaction_costs }} DKK fee<br>
-                        2. You cannot buy Token if you don't have enough money<br>
-                        3. You cannot sell more Token than you currently own<br>
-                        4. You cannot buy more Token than you can use during the week<br>
-                        5. You cannot buy more Token than you can use the next day<br>
-                        6. The Token price increases or decreases by {{ price_change_rate }} DKK for each Token bought or sold across all participants
+                        2. You cannot buy tokens if you don't have enough money<br>
+                        3. You cannot sell more tokens than you currently own<br>
+                        4. You cannot buy more tokens than you can use during the week<br>
+                        5. You cannot buy more tokens than you can use the next day<br>
+                        6. The Token price increases or decreases by {{ price_change_rate }} DKK for each token bought or sold across all participants
                     </span>
                 </span>
             <div class="market-info" style="margin-top: -40px;">       
@@ -50,7 +50,7 @@
 
                 <!-- Token Warning -->
                 <div id="token-warning" class="mb-20 p-12 warning-text" style="display: none">
-                    <strong>Warning:</strong> You need at least <span id="required-token-count"></span> Token for your next day.
+                    <strong>Warning:</strong> You need at least <span id="required-token-count"></span> tokens for your next day.
                 </div>
 
                 <!-- Continue button -->
@@ -60,7 +60,7 @@
             </form>
 
             <p class="mt-20" style="font-size: 0.9em; color: var(--summary-label-color)">
-                Every time someone buys or sells a Token, it changes the price for the next day.
+                Every time someone buys or sells a token, it changes the price for the next day.
             </p>
         </div>
     </div>
@@ -109,9 +109,8 @@
                             <i class="fas fa-car-side"></i><sup><i class="fas fa-clock"><sup>{{ buffer }}</sup></sup></i>
                         {% endif %}
                 </td>
-                <td> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 16px">: {{ mode_info.time }} <br> 
                 <td> <img src="{% static 'icons/cost.png' %}" alt="cost" style="width: 16px">: <span style="color: var(--budget-orange)"> {{ mode_info.cost }} </span> DKK <br> 
-                    <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> Token </td>
+                    <img src="{% static 'icons/token_white.png' %}" alt="token" style="width: 16px">: <span style="color: var(--token-green)"> {{ mode_info.token }} </span> {% if mode_info.token == 1 %}Token{% else %}Tokens{% endif %} </td>
                 <td> 
                     <div class="mt--2">
                         {% for is_filled in mode_info.rating %}
@@ -122,6 +121,9 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                </td>
+                <!-- Time & Distance Info -->
+                <td style="color: grey;"> <img src="{% static 'icons/time.png' %}" alt="time" style="width: 12px">: {{ mode_info.time }} <br> <p style= "font-size:12px;">*already included in costs</p>
                 </td>
             </tr>
             {% endfor %}
@@ -156,7 +158,6 @@ let totalTokenSold= 0;
 const currentBudget= parseFloat("{{ budget }}") || 0;
 const currentToken= parseInt("{{ token }}") || 0;
 const maxTokenAllowed= parseInt("{{ max_token }}") || 0;
-const maxTokenPerBuy= parseInt("{{ absolute_max_token }}") || 0;
 const minTokenNeeded= parseInt("{{ min_required_token }}");
 
 console.log("currentToken", currentToken);
@@ -194,14 +195,7 @@ function submitBuy() {
     }
 
     if (futureTokenHoldings > maxTokenAllowed) {
-        errorDiv.innerHTML = `Buying Token is blocked as the trade exceeds the <strong>maximum Token useable for the remaining week of ${maxTokenAllowed} Token.</strong>`;
-        errorDiv.style.display = "block";
-        input.value = '';
-        return;
-    }
-
-    if ((totalTokenPurchased + value) > maxTokenPerBuy) {
-        errorDiv.innerHTML = `Buying Token is blocked as the trade exceeds the <strong>maximum Token useable for the next day of ${maxTokenPerBuy} Token.</strong>`;
+        errorDiv.innerHTML = `Buying tokens is blocked as the trade exceeds the <strong>maximum tokens useable for the remaining week of ${maxTokenAllowed} tokens.</strong>`;
         errorDiv.style.display = "block";
         input.value = '';
         return;
@@ -228,7 +222,7 @@ function submitSell() {
     const maxSellableToken = currentToken + totalTokenPurchased - totalTokenSold;
 
     if (value > maxSellableToken) {
-        errorDiv.innerHTML = "<strong>Not enough Token.</strong> This trade would exceed the available Token.";
+        errorDiv.innerHTML = "<strong>Not enough tokens.</strong> This trade would exceed the available tokens.";
         errorDiv.style.display = "block";
         input.value = '';
         return;
@@ -320,9 +314,9 @@ function updateMarketPreview() {
     const preview = document.getElementById("market-preview");
     preview.innerHTML = `
         <strong>Trade summary:</strong><br>
-        Token Bought: <span style="color: var(--token-green)">${totalTokenPurchased}</span><br>
-        Token Sold: <span style="color: var(--token-green)">${totalTokenSold}</span><br>
-        Transaction Fee: <span style="color: var(--budget-orange)">${transactionFee.toFixed(2)} DKK</span><br><br>
+        Token bought: <span style="color: var(--token-green)">${totalTokenPurchased}</span><br>
+        Token sold: <span style="color: var(--token-green)">${totalTokenSold}</span><br>
+        Transaction fee: <span style="color: var(--budget-orange)">${transactionFee.toFixed(2)} DKK</span><br><br>
         <strong>Budget preview after trade:</strong><br>
         Monetary Budget: <span style="color:  var(--budget-orange)">${previewBudget.toFixed(2)}</span> DKK<br>
         Token Budget: <span style="color: var(--token-green)">${previewToken}</span>

@@ -2,7 +2,7 @@
 
 <!-- ==================== Section 1: Automated selling ==================== -->
 <br>
-<h4 class="title-highlight">Automated selling of unused Token</h4>
+<h4 class="title-highlight">Automated selling of unused tokens</h4>
 
 <div class="summary-card" style="margin-top: -5px;">
     <div class="mb-10">
@@ -13,7 +13,7 @@
     <div class="mb-10">
         <span class="text-bold-dark"> Added to budget: </span>
         <span class="text-bold-green">{{ token_sold }}</span>
-        <span style="color: var(--summary-label-color);">Token × </span>
+        <span style="color: var(--summary-label-color);">{% if token_sold == 1 %}Token{% else %}Tokens{% endif %} × </span>
         <span class="text-bold-orange">{{ token_price }}</span>
         <span style="color: var(--summary-label-color);"> DKK</span>
         {% if current_phase not in ('testI', 'testII') %}

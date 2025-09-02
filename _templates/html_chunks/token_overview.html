@@ -7,16 +7,17 @@
             <th style="width: 30%">Day</th>
             <th style="width: 35%">
                 <div class="table-align">
-                    Default Mode Token
+                    Default mode token
                     <span class="tooltip-icon">
                         <span class="info-circle choice">i</span>
                         <span class="tooltip-text">
-                            These Token show how many Token you need for the <strong>same modes</strong>
+                            This column shows how many tokens you need for the <strong>same modes</strong>
                             of transportation as in your usual commuting week.
                         </span>
                     </span>
                 </div>
             </th>
+            <th style="width: 10%">Default mode</th>
             <th style="width: 35%">Token used</th>
         </tr>
 
@@ -24,6 +25,17 @@
             <tr>
                 <td>{{ trip.day }}</td>
                 <td>{{ trip.base_token }}</td>
+                <td style="text-align: center;">
+                    {% if trip.base_mode == 'walking' %}
+                        <i class="fas fa-person-walking"></i>
+                    {% elif trip.base_mode == 'cycling' %}
+                        <i class="fas fa-biking"></i>
+                    {% elif trip.base_mode == 'transit' %}
+                        <i class="fas fa-train"></i> <i class="fas fa-bus"></i>
+                    {% elif trip.base_mode == 'driving' %}
+                        <i class="fas fa-car-side"></i>
+                    {% endif %}
+                </td>
                 <td>{{ trip.token_used }}</td>
             </tr>
         {% endfor %}
@@ -31,6 +43,7 @@
         <tr class="table-total">
             <td>Total</td>
             <td>{{ total_base_token }}</td>
+            <td>  </td>
             <td>{{ total_token_used }}</td>
         </tr>
     </table>
